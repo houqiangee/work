@@ -11,9 +11,9 @@
 		
 		<!-- POSTGRESQL 开发  -->
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://59.206.136.29:5866/postgres" />
-		<property name="username" value="highgo" />
-		<property name="password" value="highgo123"/> 
+		<property name="url" value="jdbc:postgresql://127.0.0.1:5432/postgres" />
+		<property name="username" value="postgres" />
+		<property name="password" value="postgres"/> 
 		
 		<!-- 默认关闭auto commit -->
 		<property name="defaultAutoCommit" value="false" />
