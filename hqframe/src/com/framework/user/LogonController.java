@@ -5,11 +5,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.ModelAndView;
 
-import com.framework.layer.HQFrameController;
+import com.framework.layer.Controller;
 import com.framework.util.DataObject;
 
 
-public class LogonController extends HQFrameController{
+public class LogonController extends Controller{
 	/**
 	 * µÇÂ¼Ò³Ãæ
 	 * @author hq
