@@ -8,13 +8,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.framework.layer.BPO;
+import com.framework.util.Sql;
+import com.framework.util.Transaction;
+import com.framework.util.TransactionManager;
 
 
 public class StockBPO extends BPO{
 	
 	public static void main(String[] str) throws Exception{
 		System.out.println("ks");
-		InputStream input = new FileInputStream(new File("H:/股票列表h.txt"));
+		InputStream input = new FileInputStream(new File("D:/股票列表s.txt"));
 		ByteArrayOutputStream swapStream = new ByteArrayOutputStream(); 
 		byte[] buff = new byte[100]; //buff用于存放循环读取的临时数据 
 		int rc = 0; 
@@ -27,6 +30,9 @@ public class StockBPO extends BPO{
 		
 		Pattern p = Pattern.compile(regEx);
         Matcher m = p.matcher(stri);
+        Transaction tm=TransactionManager.getTransaction();
+        tm.begin();
+        Sql sql=new Sql();
         while(m.find()){
         	String d=m.group();
         	d=d.replaceAll("<.*?>", "");
@@ -35,8 +41,13 @@ public class StockBPO extends BPO{
             m1.find();
             String gpdm=m1.group().replace("(", "").replace(")", "");
             String gpmc=d.replaceAll("\\(.*?\\)", "");
-            System.out.println(gpdm);
-        	System.out.println(gpmc);
+        	sql.setSql("insert into stock.stock_list(jysc,gpdm,gpmc) values (?,?,?) ");
+        	sql.setString(1, "s");
+        	sql.setString(2, gpdm);
+        	sql.setString(3, gpmc);
+        	sql.executeUpdate();
         }
+        tm.commitWithoutStart();
+        System.out.println("js");
 	}
 }
