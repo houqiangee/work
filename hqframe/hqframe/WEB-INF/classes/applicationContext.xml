@@ -39,8 +39,8 @@
 		<property name="minEvictableIdleTimeMillis" value="300000" />
 
 		<property name="testWhileIdle" value="true" />
-		<property name="testOnBorrow" value="true" />
-		<property name="testOnReturn" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
 	</bean>
 	
 	<bean id="transactionManager"

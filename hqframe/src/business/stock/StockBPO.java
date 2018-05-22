@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.framework.layer.BPO;
+import com.framework.util.DataStore;
 import com.framework.util.Sql;
 import com.framework.util.Transaction;
 import com.framework.util.TransactionManager;
@@ -47,7 +48,9 @@ public class StockBPO extends BPO{
         	sql.setString(3, gpmc);
         	sql.executeUpdate();
         }
+        sql.setSql("select * from stock.stock_list");
+        DataStore ds=sql.executeQuery();
+        System.out.println(1);
         tm.commitWithoutStart();
-        System.out.println("js");
 	}
 }
