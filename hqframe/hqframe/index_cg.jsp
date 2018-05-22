@@ -6,26 +6,20 @@ String version=System.currentTimeMillis()+"";
 <script type="text/javascript" src="./js/echarts.js"></script>
 <div id="index-cg-main">
 	<div id="cg-top">
-		<form class="layui-form" action="" lay-filter="cg-top-form">
-			<div class="layui-form-item layui-form-mid">
-				<div class="layui-inline">
-					<label class="layui-form-label"></label>
-					<label class="layui-form-label"></label>
-					<label class="layui-form-label"></label>
-					<label class="layui-form-label"></label>
-					<label class="layui-form-label"></label>
-					<label class="layui-form-label"></label>
-					<label class="layui-form-label"></label>
-					<label class="layui-form-label"></label>
-					<div class="layui-input-inline">
-						<input type="text" name="gpdm" lay-verify="title" autocomplete="off" placeholder="请输入股票代码" class="layui-input">
-					</div>
-					<div class="layui-input-inline">
-						<button class="layui-btn" lay-submit="" lay-filter="demo1">分析</button>
+		<div style="width: 500px;margin-left: auto;margin-right: auto;">
+			<form class="layui-form" action="" lay-filter="cg-top-form">
+				<div class="layui-form-item layui-form-mid">
+					<div class="layui-inline">
+						<div class="layui-input-inline">
+							<input type="text" name="gpdm" lay-verify="title" autocomplete="off" placeholder="请输入股票代码" class="layui-input">
+						</div>
+						<div class="layui-input-inline">
+							<button class="layui-btn" lay-submit="" lay-filter="demo1">分析</button>
+						</div>
 					</div>
 				</div>
-			</div>
-		</form>
+			</form>
+		</div>
 	</div>
 	<div id="cg-k-line-div" >
 		<div id="cg-k-line" style="height: 600px;width: 1000px;margin-left: auto;margin-right: auto" >
