@@ -8,7 +8,6 @@ import javax.sql.DataSource;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
@@ -71,7 +70,7 @@ public class DatabaseSessionUtil
     }
     DataSource dataSource = null;
     if (!(dsMap.containsKey(dbName))) {
-      dataSource = (DataSource)getCtx().getBean(dbName, DataSource.class);
+      dataSource = getDataSource(dbName);
       dsMap.put(dbName, dataSource);
     } else {
       dataSource = (DataSource)dsMap.get(dbName);
@@ -80,6 +79,19 @@ public class DatabaseSessionUtil
     return jdbcTemplate;
   }
 
+  public static DataSource getDataSource() {
+	    return getDataSource("dataSource");
+	  }
+
+  public static DataSource getDataSource(String dbName) {
+    ApplicationContext ctx = getCtx();
+    Object bean = ctx.getBean(dbName);
+    if (bean instanceof DataSource) {
+      return ((DataSource)bean);
+    }
+    throw new RuntimeException("暂不支持【" + bean.getClass().getName() + "】类型数据源配置，请检查!");
+  }
+  
   public static int getDBType()
     
   {
@@ -145,10 +157,12 @@ public class DatabaseSessionUtil
     tmMap.put("dataSource", txManager);
   }
 
-  public static ApplicationContext getCtx() {
-    ctx = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
-    return ctx;
-  }
+	public static ApplicationContext getCtx() {
+		if (ctx == null) {
+			ctx = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+		}
+		return ctx;
+	}
 
   public static void setCtx(ApplicationContext application) {
     ctx = application;

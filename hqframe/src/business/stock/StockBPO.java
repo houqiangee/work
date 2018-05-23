@@ -7,7 +7,10 @@ import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import oracle.jrockit.jfr.events.DataStructureDescriptor;
+
 import com.framework.layer.BPO;
+import com.framework.util.DataStore;
 import com.framework.util.Sql;
 import com.framework.util.Transaction;
 import com.framework.util.TransactionManager;
@@ -17,7 +20,7 @@ public class StockBPO extends BPO{
 	
 	public static void main(String[] str) throws Exception{
 		System.out.println("ks");
-		InputStream input = new FileInputStream(new File("D:/股票列表s.txt"));
+		InputStream input = new FileInputStream(new File("H:/股票列表s.txt"));
 		ByteArrayOutputStream swapStream = new ByteArrayOutputStream(); 
 		byte[] buff = new byte[100]; //buff用于存放循环读取的临时数据 
 		int rc = 0; 
