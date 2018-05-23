@@ -144,7 +144,7 @@ public class DateUtil {
 			}
 			String temp = (String) h.get(new Integer(n));
 			h.remove(new Integer(n));
-			javaFormat = temp + javaFormat;
+			javaFormat = javaFormat+temp;
 		}
 		SimpleDateFormat df = new SimpleDateFormat(javaFormat, new DateFormatSymbols());
 
@@ -617,7 +617,7 @@ public class DateUtil {
 			}
 			String temp = (String) h.get(new Integer(n));
 			h.remove(new Integer(n));
-			javaFormat = temp + javaFormat;
+			javaFormat = javaFormat+temp;
 		}
 		SimpleDateFormat df = new SimpleDateFormat(javaFormat);
 		df.setLenient(false);
