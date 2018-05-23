@@ -75,7 +75,7 @@ public class StockBPO extends BPO{
 		Transaction tm=TransactionManager.getTransaction();
         tm.begin();
         Sql sql=new Sql();
-        String jysc[][]={{"0","h"},{"1","s"}};
+        String jysc[][]={{"1","s"},{"0","h"}};
         for(int s=0;s<2;s++){
         	sql.setSql("select a.gpdm," +
         			"		   (select max(rq) from stock.stock_day_infor x where x.jysc=a.jysc and x.gpdm=a.gpdm) zhrq" +
