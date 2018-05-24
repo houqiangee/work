@@ -144,9 +144,10 @@ public class StockBPO extends BPO{
 		String gpdm=para.getString("gpdm");
 		String jysc=para.getString("jysc");
 		sql.setSql("select wm_concat(to_char(rq,'yyyy/mm/dd')||'#'||kpj||'#'||spj||'#'||zde||'#'||zdf||'%#'||zdj||'#'||zgj) as re " +
-				"     from stock.stock_day_infor " +
-				"	 where gpdm=? and jysc=? " +
-				"	 order by rq ");
+				"     from " +
+				"  (select * from1 stock.stock_day_infor " +
+				"	 where gpdm=? and jysc=? and kpj<>0 " +
+				"	 order by rq ) as m ");
 		sql.setString(1, gpdm);
 		sql.setString(2, jysc);
 		DataStore vds=sql.executeQuery();

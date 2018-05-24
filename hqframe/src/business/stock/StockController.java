@@ -18,12 +18,11 @@ public class StockController extends Controller{
 	 * 查某个股票的k线
 	 * @author hq
 	 */
-	@RequestMapping(method = RequestMethod.GET )
 	public ModelAndView showOneStockK(HttpServletRequest request,
 			HttpServletResponse response, DataObject para) throws Exception {
 		BPO nbpo=this.newBPO(StockBPO.class);
 		DataObject vdo=nbpo.doMethod("showOneStockK", para,this.getUser(request));
-		return this.showMsg(response, vdo.toJSON());
+		return this.writeMsg(response, vdo.toJSON());
 	}
 	
 }

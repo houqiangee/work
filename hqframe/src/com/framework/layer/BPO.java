@@ -41,24 +41,20 @@ public class BPO {
 			CallStackTracer.startNode(super.getClass().getName(), pMethodFullName);
 
 			tmFlag = tm.begin();
-			Method method = super.getClass().getMethod(pMethodFullName, new Class[] { DataObject.class });
+			Method method = super.getClass().getMethod(pMethodName, new Class[] { DataObject.class });
 			DataObject vdo = (DataObject) method.invoke(this, new Object[] { para });
 			if (tmFlag == 1) {
 				tm.commitWithoutStart();
 			}
 			return vdo;
-		} catch (SecurityException e) {
-		} catch (NoSuchMethodException e) {
-		} catch (IllegalArgumentException e) {
-		} catch (IllegalAccessException e) {
 		} catch (Exception e) {
+			e.printStackTrace();
 			if (tmFlag == 1)
 				;
 			throw e;
 		} finally {
 			CallStackTracer.endNode();
 		}
-		return null;
 	}
 
 	protected BPO newBPO(Class<BPO> clazz) {
