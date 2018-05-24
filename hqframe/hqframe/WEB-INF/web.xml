@@ -61,7 +61,7 @@
 		</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/frame-servlet.xml</param-value>
+			<param-value>/WEB-INF/frame-servlet.xml,/WEB-INF/hqframe-servlet.xml</param-value>
 		</init-param>
 		<init-param>
 			<param-name>charset</param-name>

@@ -25,7 +25,7 @@ public class Controller extends AbstractController {
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
 			String methodName = this.methodNameResolver.getHandlerMethodName(request);
-			Method method = this.getClass().getMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
+			Method method = this.getClass().getMethod(methodName, HttpServletRequest.class, HttpServletResponse.class,DataObject.class);
 			return (ModelAndView) method.invoke(this, request, response);
 		} catch (NoSuchRequestHandlingMethodException ex) {
 			return handleNoSuchRequestHandlingMethod(ex, request, response);
@@ -56,7 +56,7 @@ public class Controller extends AbstractController {
 		return new ModelAndView(JspPath, para);
 	}
 
-	protected BPO newBPO(Class<BPO> clazz) {
+	protected <T extends BPO> T newBPO(Class<T> clazz){
 		BPO clazzObj = null;
 		try {
 			clazzObj = (BPO) clazz.newInstance();
@@ -65,6 +65,6 @@ public class Controller extends AbstractController {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		return clazzObj;
+		return (T) clazzObj;
 	}
 }

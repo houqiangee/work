@@ -6,7 +6,9 @@
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
 			<props>
+				<prop key="/Stock.do">Stock</prop>
 			</props>
 		</property>
 	</bean>
+	<bean id="Stock" class="business.stock.StockController"></bean>
 </beans>
