@@ -48,6 +48,7 @@ public class Controller extends AbstractController {
 		    try{
 		    	r=(ModelAndView) method.invoke(this, request, response,para);
 		    }catch(InvocationTargetException e){
+		    	tm.rollbackWithoutStart();
 		    	Throwable cause = e.getCause();
 	            if(cause instanceof BusinessException){
 	            	rdo.put("_hqglo_error_msg", e.getMessage());
@@ -61,10 +62,9 @@ public class Controller extends AbstractController {
 			    	return null;
 	            }
 		    }catch(Exception e){
-		    	e.printStackTrace();
 		    	tm.rollbackWithoutStart();
 		    	rdo.put("_hqglo_error_msg", "Õ¯¬Á“Ï≥££¨«Î…‘∫Û≥¢ ‘°£");
-		    	rdo.put("_hqglo_error_type", "red");
+		    	rdo.put("_hqglo_error_type", "sys");
 		    	writeMsg(response, rdo.toJSON());
 		    	return null;
 		    }
