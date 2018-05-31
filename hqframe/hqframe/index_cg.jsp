@@ -64,177 +64,178 @@ function showOneStockK(gpdm,jysc){
 	}
 	
 	var url = "Stock.do?action=showOneStockK&gpdm="+gpdm+"&jysc="+jysc+"&_="+new Date();  
-	var data = {type:1};  
-	$.ajax({  
-	    type : "get",  
-	    async : false, 
-	    url : url,  
-	    data : data,  
-	    timeout:1000,  
-	    success:function(dates){  
-	    	var result=JSON.parse(dates);
-	    	var re=result.re;
-	    	var eachday=re.split(",");
-	    	var rawData=[];
-	    	for(var i=0;i<eachday.length;i++){
-	    		if(eachday[i]!=null && eachday[i]!=""){
-	    			rawData.push(eachday[i].split("#"));
-	    		}
-	    	}
-	    	
-	    	function calculateMA(dayCount, data) {
-	    	    var result = [];
-	    	    for (var i = 0, len = data.length; i < len; i++) {
-	    	        if (i < dayCount) {
-	    	            result.push('-');
-	    	            continue;
-	    	        }
-	    	        var sum = 0;
-	    	        for (var j = 0; j < dayCount; j++) {
-	    	            sum += data[i - j][1];
-	    	        }
-	    	        result.push(sum / dayCount);
-	    	    }
-	    	    return result;
-	    	}
+	AjaxUtil.aReq(url,function(dates){
+    	var result=JSON.parse(dates);
+    	var re=result.re;
+    	var eachday=re.split(",");
+    	var rawData=[];
+    	for(var i=0;i<eachday.length;i++){
+    		if(eachday[i]!=null && eachday[i]!=""){
+    			rawData.push(eachday[i].split("#"));
+    		}
+    	}
+    	
+    	function calculateMA(dayCount, data) {
+    	    var result = [];
+    	    for (var i = 0, len = data.length; i < len; i++) {
+    	        if (i < dayCount) {
+    	            result.push('-');
+    	            continue;
+    	        }
+    	        var sum = 0;
+    	        for (var j = 0; j < dayCount; j++) {
+    	            sum += data[i - j][1];
+    	        }
+    	        result.push(sum / dayCount);
+    	    }
+    	    return result;
+    	}
 
 
-	    	var dates = rawData.map(function (item) {
-	    	    return item[0];
-	    	});
+    	var dates = rawData.map(function (item) {
+    	    return item[0];
+    	});
 
-	    	var data = rawData.map(function (item) {
-	    	    return [+item[1], +item[2], +item[5], +item[6]];
-	    	});
-	    	var option = {
-	    	    backgroundColor: '#21202D',
-	    	    legend: {
-	    	        data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
-	    	        inactiveColor: '#777',
-	    	        textStyle: {
-	    	            color: '#fff'
-	    	        }
-	    	    },
-	    	    tooltip: {
-	    	        trigger: 'axis',
-	    	        axisPointer: {
-	    	            animation: false,
-	    	            type: 'cross',
-	    	            lineStyle: {
-	    	                color: '#376df4',
-	    	                width: 2,
-	    	                opacity: 1
-	    	            }
-	    	        }
-	    	    },
-	    	    xAxis: {
-	    	        type: 'category',
-	    	        data: dates,
-	    	        axisLine: { lineStyle: { color: '#8392A5' } }
-	    	    },
-	    	    yAxis: {
-	    	        scale: true,
-	    	        axisLine: { lineStyle: { color: '#8392A5' } },
-	    	        splitLine: { show: false }
-	    	    },
-	    	    grid: {
-	    	        bottom: 80
-	    	    },
-	    	    dataZoom: [{
-	    	        textStyle: {
-	    	            color: '#8392A5'
-	    	        },
-	    	        handleSize: '80%',
-	    	        dataBackground: {
-	    	            areaStyle: {
-	    	                color: '#8392A5'
-	    	            },
-	    	            lineStyle: {
-	    	                opacity: 0.8,
-	    	                color: '#8392A5'
-	    	            }
-	    	        },
-	    	        handleStyle: {
-	    	            color: '#fff',
-	    	            shadowBlur: 3,
-	    	            shadowColor: 'rgba(0, 0, 0, 0.6)',
-	    	            shadowOffsetX: 2,
-	    	            shadowOffsetY: 2
-	    	        }
-	    	    }, {
-	    	        type: 'inside'
-	    	    }],
-	    	    animation: false,
-	    	    series: [
-	    	        {
-	    	            type: 'candlestick',
-	    	            name: '日K',
-	    	            data: data,
-	    	            itemStyle: {
-	    	                normal: {
-	    	                    color: '#FD1050',
-	    	                    color0: '#0CF49B',
-	    	                    borderColor: '#FD1050',
-	    	                    borderColor0: '#0CF49B'
-	    	                }
-	    	            }
-	    	        },
-	    	        {
-	    	            name: 'MA5',
-	    	            type: 'line',
-	    	            data: calculateMA(5, data),
-	    	            smooth: true,
-	    	            showSymbol: false,
-	    	            lineStyle: {
-	    	                normal: {
-	    	                    width: 1
-	    	                }
-	    	            }
-	    	        },
-	    	        {
-	    	            name: 'MA10',
-	    	            type: 'line',
-	    	            data: calculateMA(10, data),
-	    	            smooth: true,
-	    	            showSymbol: false,
-	    	            lineStyle: {
-	    	                normal: {
-	    	                    width: 1
-	    	                }
-	    	            }
-	    	        },
-	    	        {
-	    	            name: 'MA20',
-	    	            type: 'line',
-	    	            data: calculateMA(20, data),
-	    	            smooth: true,
-	    	            showSymbol: false,
-	    	            lineStyle: {
-	    	                normal: {
-	    	                    width: 1
-	    	                }
-	    	            }
-	    	        },
-	    	        {
-	    	            name: 'MA30',
-	    	            type: 'line',
-	    	            data: calculateMA(30, data),
-	    	            smooth: true,
-	    	            showSymbol: false,
-	    	            lineStyle: {
-	    	                normal: {
-	    	                    width: 1
-	    	                }
-	    	            }
-	    	        }
-	    	    ]
-	    	};
-	    	
-	    	echarts.init(document.getElementById('cg-k-line')).setOption(option);
-	    },  
-	    error: function() {  
-	    }  
-	});  
+    	var data = rawData.map(function (item) {
+    	    return [+item[1], +item[2], +item[5], +item[6]];
+    	});
+    	var option = {
+    	    backgroundColor: '#21202D',
+    	    legend: {
+    	        data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30','MA60'],
+    	        inactiveColor: '#777',
+    	        textStyle: {
+    	            color: '#fff'
+    	        }
+    	    },
+    	    tooltip: {
+    	        trigger: 'axis',
+    	        axisPointer: {
+    	            animation: false,
+    	            type: 'cross',
+    	            lineStyle: {
+    	                color: '#376df4',
+    	                width: 2,
+    	                opacity: 1
+    	            }
+    	        }
+    	    },
+    	    xAxis: {
+    	        type: 'category',
+    	        data: dates,
+    	        axisLine: { lineStyle: { color: '#8392A5' } }
+    	    },
+    	    yAxis: {
+    	        scale: true,
+    	        axisLine: { lineStyle: { color: '#8392A5' } },
+    	        splitLine: { show: false }
+    	    },
+    	    grid: {
+    	        bottom: 80
+    	    },
+    	    dataZoom: [{
+    	        textStyle: {
+    	            color: '#8392A5'
+    	        },
+    	        handleSize: '80%',
+    	        dataBackground: {
+    	            areaStyle: {
+    	                color: '#8392A5'
+    	            },
+    	            lineStyle: {
+    	                opacity: 0.8,
+    	                color: '#8392A5'
+    	            }
+    	        },
+    	        handleStyle: {
+    	            color: '#fff',
+    	            shadowBlur: 3,
+    	            shadowColor: 'rgba(0, 0, 0, 0.6)',
+    	            shadowOffsetX: 2,
+    	            shadowOffsetY: 2
+    	        }
+    	    }, {
+    	        type: 'inside'
+    	    }],
+    	    animation: false,
+    	    series: [
+    	        {
+    	            type: 'candlestick',
+    	            name: '日K',
+    	            data: data,
+    	            itemStyle: {
+    	                normal: {
+    	                    color: '#FD1050',
+    	                    color0: '#0CF49B',
+    	                    borderColor: '#FD1050',
+    	                    borderColor0: '#0CF49B'
+    	                }
+    	            }
+    	        },
+    	        {
+    	            name: 'MA5',
+    	            type: 'line',
+    	            data: calculateMA(5, data),
+    	            smooth: true,
+    	            showSymbol: false,
+    	            lineStyle: {
+    	                normal: {
+    	                    width: 1
+    	                }
+    	            }
+    	        },
+    	        {
+    	            name: 'MA10',
+    	            type: 'line',
+    	            data: calculateMA(10, data),
+    	            smooth: true,
+    	            showSymbol: false,
+    	            lineStyle: {
+    	                normal: {
+    	                    width: 1
+    	                }
+    	            }
+    	        },
+    	        {
+    	            name: 'MA20',
+    	            type: 'line',
+    	            data: calculateMA(20, data),
+    	            smooth: true,
+    	            showSymbol: false,
+    	            lineStyle: {
+    	                normal: {
+    	                    width: 1
+    	                }
+    	            }
+    	        },
+    	        {
+    	            name: 'MA30',
+    	            type: 'line',
+    	            data: calculateMA(30, data),
+    	            smooth: true,
+    	            showSymbol: false,
+    	            lineStyle: {
+    	                normal: {
+    	                    width: 1
+    	                }
+    	            }
+    	        },
+    	        {
+    	            name: 'MA60',
+    	            type: 'line',
+    	            data: calculateMA(60, data),
+    	            smooth: true,
+    	            showSymbol: false,
+    	            lineStyle: {
+    	                normal: {
+    	                    width: 1
+    	                }
+    	            }
+    	        }
+    	    ]
+    	};
+	    echarts.init(document.getElementById('cg-k-line')).setOption(option);
+	});
 }
 
 showOneStockK("000001","h");

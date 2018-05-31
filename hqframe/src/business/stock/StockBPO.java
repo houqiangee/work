@@ -145,14 +145,18 @@ public class StockBPO extends BPO{
 		String jysc=para.getString("jysc");
 		sql.setSql("select wm_concat(to_char(rq,'yyyy/mm/dd')||'#'||kpj||'#'||spj||'#'||zde||'#'||zdf||'%#'||zdj||'#'||zgj) as re " +
 				"     from " +
-				"  (select * from1 stock.stock_day_infor " +
-				"	 where gpdm=? and jysc=? and kpj<>0 " +
+				"  (select * from stock.stock_day_infor " +
+				"	 where gpdm=? and jysc=? and kpj<>0 and rq>? " +
 				"	 order by rq ) as m ");
 		sql.setString(1, gpdm);
 		sql.setString(2, jysc);
+		sql.setDate(3, DateUtil.addDay(DateUtil.getDBDate(), -2*365));
 		DataStore vds=sql.executeQuery();
 		if(vds.rowCount()>0){
 			re=vds.getString(0, "re");
+		}
+		if(re==null || "".equals(re)){
+			this.BusinessException("啥都没查到啊");
 		}
 		vdo.put("re", re);
 		return vdo;
