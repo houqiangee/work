@@ -55,3 +55,4 @@
 = 2018-05-23 20:20:58,995 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
 = 2018-05-23 20:26:34,337 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
 = 2018-05-23 20:26:47,507 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-05-24 22:02:25,969 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
