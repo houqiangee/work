@@ -1,11 +1,15 @@
 package com.framework.layer;
 
+import com.framework.exception.BusinessException;
+import com.framework.exception.UserlessException;
 import com.framework.user.User;
 import com.framework.util.CallStackTracer;
 import com.framework.util.DataObject;
 import com.framework.util.Sql;
 import com.framework.util.Transaction;
 import com.framework.util.TransactionManager;
+
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class BPO {
@@ -47,6 +51,14 @@ public class BPO {
 				tm.commitWithoutStart();
 			}
 			return vdo;
+		} catch (InvocationTargetException e) {
+			Throwable cause = e.getTargetException();
+            if(cause instanceof BusinessException 
+               || cause instanceof UserlessException){
+            }else{
+            	e.printStackTrace();
+            }
+            throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (tmFlag == 1)
@@ -69,4 +81,7 @@ public class BPO {
 		return clazzObj;
 	}
 
+	protected void BusinessException(String msg) throws BusinessException {
+		throw new BusinessException(msg);
+	}
 }

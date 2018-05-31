@@ -28,7 +28,7 @@ public class LogonController extends Controller{
 		
 		
 		
-		return this.showMsg(response, "登录成功");
+		return this.writeMsg(response, "登录成功");
 	}
 	
 }

@@ -48,23 +48,28 @@ public class Controller extends AbstractController {
 		    try{
 		    	r=(ModelAndView) method.invoke(this, request, response,para);
 		    }catch(InvocationTargetException e){
-		    	Throwable cause = e.getCause();
+		    	tm.rollbackWithoutStart();
+		    	Throwable cause = e.getTargetException().getCause();
 	            if(cause instanceof BusinessException){
-	            	rdo.put("_hqglo_error_msg", e.getMessage());
+	            	rdo.put("_hqglo_error_msg", cause.getMessage());
 			    	rdo.put("_hqglo_error_type", "bus");
 			    	writeMsg(response, rdo.toJSON());
 			    	return null;
 	            }else if(cause instanceof UserlessException){
-	            	rdo.put("_hqglo_error_msg", e.getMessage());
+	            	rdo.put("_hqglo_error_msg", cause.getMessage());
 			    	rdo.put("_hqglo_error_type", "userless");
+			    	writeMsg(response, rdo.toJSON());
+			    	return null;
+	            }else{
+	            	rdo.put("_hqglo_error_msg", "Õ¯¬Á“Ï≥££¨«Î…‘∫Û≥¢ ‘°£");
+			    	rdo.put("_hqglo_error_type", "sys");
 			    	writeMsg(response, rdo.toJSON());
 			    	return null;
 	            }
 		    }catch(Exception e){
-		    	e.printStackTrace();
 		    	tm.rollbackWithoutStart();
 		    	rdo.put("_hqglo_error_msg", "Õ¯¬Á“Ï≥££¨«Î…‘∫Û≥¢ ‘°£");
-		    	rdo.put("_hqglo_error_type", "red");
+		    	rdo.put("_hqglo_error_type", "sys");
 		    	writeMsg(response, rdo.toJSON());
 		    	return null;
 		    }
