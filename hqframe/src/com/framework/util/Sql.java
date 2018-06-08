@@ -244,7 +244,6 @@ public class Sql implements Serializable {
 	}
 
 	private void startTraceSql()
-
 	{
 		StringBuffer paraStr = new StringBuffer();
 		for (int i = 0; i < this.para.size(); ++i) {

@@ -22,8 +22,10 @@ public class StockBPO extends BPO{
 	
 	//初始化股票信息
 	public static void main(String[] str) throws Exception{
-		getStockHis();
+		getStockWeekHis();
 	}
+	
+	select count(1) sl,round(zdf,1) zdf from stock.stock_week_infor group by round(zdf,1) order by zdf
 	
 	//初始化股票信息
 	public static void initStockInfor() throws Exception{
@@ -64,15 +66,276 @@ public class StockBPO extends BPO{
         tm.commitWithoutStart();
 	}
 	
+	//通过日线算周线和月线
+	public static void getStockWeekHis() throws Exception{
+		Transaction tm=TransactionManager.getTransaction();
+        tm.begin();
+        Sql sql=new Sql();
+		String jysc[][]={{"1","s"},{"0","h"}};
+        for(int s=0;s<2;s++){
+        	sql.setSql("select a.gpdm," +
+        			"		   (select min(rq) from stock.stock_day_infor x where x.jysc=a.jysc and x.gpdm=a.gpdm) zqrq," +
+        			"		   (select max(rq) from stock.stock_day_infor x where x.jysc=a.jysc and x.gpdm=a.gpdm) zhrq," +
+        			"		   (select max(rq) from stock.stock_week_infor x where x.jysc=a.jysc and x.gpdm=a.gpdm) zhweek" +
+        			"	  from stock.stock_list a " +
+        			"    where jysc='"+jysc[s][1]+"' order by gpdm ");
+        	DataStore gpds=sql.executeQuery();
+        	int rowc=gpds.rowCount();
+        	for(int k=0;k<rowc;k++){
+        		String gpdm=gpds.getString(k, "gpdm");
+        		Date zqrq=gpds.getDate(k, "zqrq");//最前面的日期
+        		Date zhrq=gpds.getDate(k, "zhrq");//最后面的日期
+        		Date zhweek=gpds.getDate(k, "zhweek");//最后的周线（这条线可能尚未汇总完成）
+        		if(zqrq==null || (zhweek==null && DateUtil.addDay(zqrq, 7).after(new Date()))){
+        			//没数据的不算，上市不足7天的不算
+        			continue;
+        		}
+        		System.out.println(jysc[s][1]+" "+gpdm);
+        		Date zhou0,zhou6;//每周的第一天（周日）和最后一天（周六）
+        		Double qsp;//前收盘价
+        		if(zhweek==null){//如果从没计算过，则先算出来第一个周的最后一天(周日算每周第一天)
+        			zhou0=DateUtil.addDay(zqrq,0-DateUtil.getWeek(zqrq));
+        			zhou6=DateUtil.addDay(zhou0, 6);
+        			sql.setSql("select " +
+        					"  (select max(rq) " +
+        					"     from stock.stock_day_infor " +
+        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zhweek," +
+        					"  (select max(zgj) " +
+        					"     from stock.stock_day_infor " +
+        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zgj," +
+        					"  (select min(zdj) " +
+        					"     from stock.stock_day_infor " +
+        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zdj," +
+        					"  (select kpj " +
+        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"' " +
+        					"	   and rq=(select min(rq) " +
+        					"    			 from stock.stock_day_infor " +
+        					"   		    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"')) kpj," +
+        					"  (select spj " +
+        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"' " +
+        					"	   and rq=(select min(rq) " +
+        					"    			 from stock.stock_day_infor " +
+        					"   		    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"')) spj," +
+        					"  (select sum(cjl) " +
+        					"     from stock.stock_day_infor " +
+        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') cjl," +
+        					"  (select sum(cjje) " +
+        					"     from stock.stock_day_infor " +
+        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') cjje " +
+        					" from dual ");
+        			int index=1;
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			DataStore lsds=sql.executeQuery();
+        			
+        			zhweek=lsds.getDate(0, "zhweek");
+        			double spj=lsds.getDouble(0, "spj");
+        			double zgj=lsds.getDouble(0, "zgj");
+        			double zdj=lsds.getDouble(0, "zdj");
+        			double kpj=lsds.getDouble(0, "kpj");
+        			double cjl=lsds.getDouble(0, "cjl");
+        			double cjje=lsds.getDouble(0, "cjje");
+        			if(kpj==0){
+        				kpj=1;//如果开盘价是0，强制成1，否则算涨幅就除0了
+        			}
+        			qsp=kpj;
+        			
+        			sql.setSql("insert into stock.stock_week_infor( " +
+        					"		   jysc, gpdm, rq, spj, zgj," +
+        					"		   zdj, kpj, qsp, zde, zdf," +
+        					"		   cjl, cjje,hsl,zsz,ltsz) " +
+        					"   select ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,? from dual " +
+        					"    where not exists(select 1 from stock.stock_week_infor where jysc=? and gpdm=? and rq=?) ");
+        			sql.setString(1, jysc[s][1]);
+        			sql.setString(2, gpdm);
+        			sql.setDate(3, zhweek);
+        			sql.setDouble(4,spj);
+        			sql.setDouble(5, zgj);
+        			sql.setDouble(6, zdj);
+        			sql.setDouble(7, kpj);
+        			sql.setDouble(8, qsp);
+        			sql.setDouble(9, spj-qsp);
+        			sql.setDouble(10, (spj-qsp)*100.0/qsp);
+        			sql.setDouble(11, cjl);
+        			sql.setDouble(12,cjje);
+        			sql.setDouble(13, 0);
+        			sql.setDouble(14, 0);
+        			sql.setDouble(15, 0);
+        			sql.setString(16, jysc[s][1]);
+        			sql.setString(17, gpdm);
+        			sql.setDate(18, zhweek);
+        			sql.executeUpdate();
+        			//插完第一条后，准备后续的循环数据
+        			qsp=spj;
+        			zhou0=DateUtil.addDay(zhou0, 7);
+        			zhou6=DateUtil.addDay(zhou0, 6);
+        		}else{//如果已经有一条了，则算出上周收盘价，然后把最后一周的删掉（后面的循环会把删掉的这周重算）
+        			zhou0=DateUtil.addDay(zhweek,0-DateUtil.getWeek(zhweek));
+        			zhou6=DateUtil.addDay(zhou0, 6);
+        			sql.setSql("select spj from stock.stock_day_infor " +
+        					"	 where gpdm=? and jysc='"+jysc[s][1]+"' " +
+        					"      and rq=(select max(rq) from stock.stock_day_infor where rq<? and gpdm=? and jysc='"+jysc[s][1]+"'  )");
+        			sql.setString(1, gpdm);
+        			sql.setDate(2, zhou0);
+        			sql.setString(3, gpdm);
+        			DataStore lsds1=sql.executeQuery();
+        			if(lsds1.rowCount()==0){
+        				qsp=1.0;
+        			}else{
+        				qsp=lsds1.getDouble(0, "spj");
+        			}
+        			sql.setSql("delete from stock.stock_week_infor where gpdm=? and jysc='"+jysc[s][1]+"' and rq=? ");
+        			sql.setString(1, gpdm);
+        			sql.setDate(2, zhweek);
+        			sql.executeUpdate();
+        		}
+        		
+        		//上面算好了，下面就开始循环插周线
+        		while(!zhou0.after(zhrq)){//只要所算周的第一天不晚于日线的最后一条数据，就进循环
+        			sql.setSql("select " +
+        					"  (select max(rq) " +
+        					"     from stock.stock_day_infor " +
+        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zhweek," +
+        					"  (select max(zgj) " +
+        					"     from stock.stock_day_infor " +
+        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zgj," +
+        					"  (select min(zdj) " +
+        					"     from stock.stock_day_infor " +
+        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zdj," +
+        					"  (select kpj " +
+        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"' " +
+        					"	   and rq=(select min(rq) " +
+        					"    			 from stock.stock_day_infor " +
+        					"   		    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"')) kpj," +
+        					"  (select spj " +
+        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"' " +
+        					"	   and rq=(select min(rq) " +
+        					"    			 from stock.stock_day_infor " +
+        					"   		    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"')) spj," +
+        					"  (select sum(cjl) " +
+        					"     from stock.stock_day_infor " +
+        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') cjl," +
+        					"  (select sum(cjje) " +
+        					"     from stock.stock_day_infor " +
+        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') cjje " +
+        					" from dual ");
+        			int index=1;
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			sql.setDate(index++, zhou0);
+        			sql.setDate(index++, zhou6);
+        			sql.setString(index++, gpdm);
+        			DataStore lsds=sql.executeQuery();
+        			
+        			zhweek=lsds.getDate(0, "zhweek");
+        			if(zhweek==null){
+        				zhou0=DateUtil.addDay(zhou0, 7);
+            			zhou6=DateUtil.addDay(zhou0, 6);
+            			continue;
+        			}
+        			
+        			double spj=lsds.getDouble(0, "spj");
+        			double zgj=lsds.getDouble(0, "zgj");
+        			double zdj=lsds.getDouble(0, "zdj");
+        			double kpj=lsds.getDouble(0, "kpj");
+        			double cjl=lsds.getDouble(0, "cjl");
+        			double cjje=lsds.getDouble(0, "cjje");
+        			if(kpj==0){
+        				kpj=1;//如果开盘价是0，强制成1，否则算涨幅就除0了
+        			}
+        			
+        			sql.setSql("insert into stock.stock_week_infor( " +
+        					"		   jysc, gpdm, rq, spj, zgj," +
+        					"		   zdj, kpj, qsp, zde, zdf," +
+        					"		   cjl, cjje,hsl,zsz,ltsz) " +
+        					"   select ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,? from dual " +
+        					"    where not exists(select 1 from stock.stock_week_infor where jysc=? and gpdm=? and rq=?) ");
+        			sql.setString(1, jysc[s][1]);
+        			sql.setString(2, gpdm);
+        			sql.setDate(3, zhweek);
+        			sql.setDouble(4,spj);
+        			sql.setDouble(5, zgj);
+        			sql.setDouble(6, zdj);
+        			sql.setDouble(7, kpj);
+        			sql.setDouble(8, qsp);
+        			sql.setDouble(9, spj-qsp);
+        			sql.setDouble(10, (spj-qsp)*100.0/qsp);
+        			sql.setDouble(11, cjl);
+        			sql.setDouble(12,cjje);
+        			sql.setDouble(13, 0);
+        			sql.setDouble(14, 0);
+        			sql.setDouble(15, 0);
+        			sql.setString(16, jysc[s][1]);
+        			sql.setString(17, gpdm);
+        			sql.setDate(18, zhweek);
+        			sql.executeUpdate();
+        			tm.commit();
+        			//准备下一个循环的数据
+        			qsp=spj;
+        			zhou0=DateUtil.addDay(zhou0, 7);
+        			zhou6=DateUtil.addDay(zhou0, 6);
+        		}
+        	}
+        }
+        System.out.println("end");
+	}
+	
 	//获取股票历史
-	public static void getStockHis() throws Exception{
+	public static void getStockDayHis() throws Exception{
 		System.out.println("ks");
 		String nowstr=DateUtil.dateToString(DateUtil.getDBDate(), "yyyyMMdd");
 		
 		Transaction tm=TransactionManager.getTransaction();
         tm.begin();
         Sql sql=new Sql();
-        String jysc[][]={{"1","s"},{"0","h"}};
+        String jysc[][]={{"0","h"},{"1","s"}};
         for(int s=0;s<2;s++){
         	sql.setSql("select a.gpdm," +
         			"		   (select max(rq) from stock.stock_day_infor x where x.jysc=a.jysc and x.gpdm=a.gpdm) zhrq" +
@@ -86,15 +349,17 @@ public class StockBPO extends BPO{
         		if(rq==null){
         			rq=DateUtil.stringToDate("19901219", "yyyyMMdd");
         		}else{
-        			DateUtil.addDay(rq, 1);
+        			rq=DateUtil.addDay(rq, 1);
         		}
         		String rqstr=DateUtil.dateToString(rq,"yyyyMMdd");
         		if(rqstr.compareTo(nowstr)>=0){
         			continue;
         		}
         		String url="http://quotes.money.163.com/service/chddata.html?code="+jysc[s][0]+gpdm+"&start="+rqstr+"&end="+nowstr+"&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP";
+        		System.out.println(url);
         		String restr= HttpRequestUtil.httpRequest_string(url, null, "get", "");
         		restr=new String(restr.getBytes("ISO8859-1"), "GBK");
+        		System.out.println(restr);
         		String data[]=restr.split("\n");
         		for(int i=1;i<data.length;i++){
         			if(data[i]==null || "".equals(data[i])){
