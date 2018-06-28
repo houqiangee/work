@@ -1,25 +1,17 @@
 package business.stock;
 
-import java.awt.Image;
-import java.util.List;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.imageio.ImageIO;
-
 
 import com.framework.layer.BPO;
 import com.framework.pic.algorithm.sift.ImageTransform;
 import com.framework.pic.algorithm.sift.MyPoint;
-import com.framework.pic.utility.Image_Utility;
 import com.framework.util.DataObject;
 import com.framework.util.DataStore;
 import com.framework.util.DateUtil;
@@ -33,45 +25,41 @@ public class StockBPO extends BPO{
 	
 	//对比股票片段与某只股票                                     1是片段                                                       2是对比目标
 	public static void getXsgp(String gpdm1,String jysc1,String gpdm2,String jysc2,int dbts) throws Exception{
+		double max1,max2,max3,min1,min2,min3;
 		Sql sql=new Sql();
-		sql.setSql("select tzc_1 from stock.stock_list where gpdm=? and jysc=? ");
+		sql.setSql("select kpj*100 kpj,spj*100 spj,zgj*100 zgj,zdj*100 zdj from stock.stock_day_infor where gpdm=? and jysc=? order by rq desc limit ? ");
 		sql.setString(1, gpdm1);
 		sql.setString(2, jysc1);
-		DataStore lsds1=sql.executeQuery();
-		if(lsds1.rowCount()==0){
+		sql.setInt(3, dbts);
+		DataStore data1=sql.executeQuery();
+		if(data1.rowCount()==0){
 			return;
 		}
-		String tzc_1_sor=lsds1.getString(0, "tzc_1");
-		if(tzc_1_sor==null || "".equals(tzc_1_sor)){
-			return;
+		sql.setSql("select max(kpj*100) max1,max(spj*100) max2,max(zgj*100) max3,min(kpj*100) min1,min(spj*100) min2,min(zdj*100) min3 " +
+				"     from (select * from stock.stock_day_infor where gpdm=? and jysc=? order by rq desc limit ?) as t ");
+		sql.setString(1, gpdm1);
+		sql.setString(2, jysc1);
+		sql.setInt(3, dbts);
+		DataStore topbot1=sql.executeQuery();
+		max1=topbot1.getDouble(0, "max1");
+		max2=topbot1.getDouble(0, "max2");
+		max3=topbot1.getDouble(0, "max3");
+		min1=topbot1.getDouble(0, "min1");
+		min2=topbot1.getDouble(0, "min2");
+		min3=topbot1.getDouble(0, "min3");
+		int max_sor=(int)max1;
+		if(max_sor<max2){
+			max_sor=(int)max2;
 		}
-		tzc_1_sor=tzc_1_sor.replace("NaN", "0");
+		if(max_sor<max3){
+			max_sor=(int)max3;
+		}
 		
-		sql.setSql("select tzc_1 from stock.stock_list where gpdm=? and jysc=? ");
-		sql.setString(1, gpdm2);
-		sql.setString(2, jysc2);
-		DataStore lsds2=sql.executeQuery();
-		if(lsds2.rowCount()==0){
-			return;
-		}
-		String tzc_1_tar=lsds2.getString(0, "tzc_1");
-		if(tzc_1_tar==null || "".equals(tzc_1_tar)){
-			return;
-		}
-		tzc_1_tar=tzc_1_tar.replace("NaN", "0");
 		
-		System.out.println(tzc_1_sor);
-		System.out.println(tzc_1_tar);
 		
-		String a[]=tzc_1_sor.split(",");
-		int length1=a.length;
-		if(length1>dbts){
-			length1=dbts;
-		}
+		
 		double sor[][]=new double[1][length1];
 		
-		String b[]=tzc_1_tar.split(",");
-		int length2=b.length;
 		double tar[][]=new double[1][length2];
 		
 		for(int i=length1-1;i>=0;i--){
