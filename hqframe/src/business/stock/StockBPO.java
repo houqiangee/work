@@ -1,26 +1,20 @@
 package business.stock;
 
-import java.awt.Image;
-import java.util.List;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
-
 import com.framework.layer.BPO;
 import com.framework.pic.algorithm.sift.ImageTransform;
 import com.framework.pic.algorithm.sift.MyPoint;
-import com.framework.pic.utility.Image_Utility;
-import com.framework.sift.SIFT;
 import com.framework.util.DataObject;
 import com.framework.util.DataStore;
 import com.framework.util.DateUtil;
@@ -32,16 +26,100 @@ import com.framework.util.TransactionManager;
 
 public class StockBPO extends BPO{
 	
+	public static void main(String str[]) throws Exception{
+		ContrastStock("h","600263","h","600263",60);
+	}
+	
 	//对比股票片段与某只股票
-	public static void main(String[] str) throws Exception{
-		double sor[][];
-		double tar[][];
+	public static void ContrastStock(String jysc1,String gpdm1,String jysc2,String gpdm2,int ts) throws Exception{
+		BufferedImage sor=getStockKImg(jysc1,gpdm1,ts);
+		if(sor==null){
+			return;
+		}
+		BufferedImage tar=getStockKImg(jysc2,gpdm2,1000);
+		if(tar==null){
+			return;
+		}
 		
+		File file1 = new File ("D:\\1.jpg");
+		String format = "jpg";
+		ImageIO.write(sor,format,file1);
+		File file2 = new File ("D:\\2.jpg");
+		ImageIO.write(tar,format,file2);
 		
 		List<MyPoint> v1 = ImageTransform.getCharacterVectors(sor);
 		List<MyPoint> v2 = ImageTransform.getCharacterVectors(tar);
 		int num = ImageTransform.getSimilarPointsNum(v1, v2);
 		System.out.println("特征点数分别为：" + v1.size() + "&" + v2.size() + "  相似点数为：" + num);
+	}
+	
+	//获取股票图片
+	public static BufferedImage getStockKImg(String jysc,String gpdm,int ts) throws Exception{
+		int max1,max2,max3,min1,min2,min3;
+		Sql sql=new Sql();
+		sql.setSql("select kpj*100 kpj,spj*100 spj,zgj*100 zgj,zdj*100 zdj " +
+				"	  from stock.stock_day_infor where jysc=? and gpdm=? order by rq desc limit ?");
+		sql.setString(1, jysc);
+		sql.setString(2, gpdm);
+		sql.setInt(3, ts);
+		DataStore data1=sql.executeQuery();
+		if(data1.rowCount()==0){
+			return null;
+		}
+		sql.setSql("select max(kpj*100) max1,max(spj*100) max2,max(zgj*100) max3,min(kpj*100) min1,min(spj*100) min2,min(zdj*100) min3 " +
+				" 	  from (select * from stock.stock_day_infor where jysc=? and gpdm=? order by rq desc limit ?) as t");
+		sql.setString(1, jysc);
+		sql.setString(2, gpdm);
+		sql.setInt(3, ts);
+		DataStore count1=sql.executeQuery();
+		max1=(int)count1.getDouble(0, "max1");
+		max2=(int)count1.getDouble(0, "max2");
+		max3=(int)count1.getDouble(0, "max3");
+		min1=(int)count1.getDouble(0, "min1");
+		min2=(int)count1.getDouble(0, "min2");
+		min3=(int)count1.getDouble(0, "min3");
+		if(max1<max2){
+			max1=max2;
+		}
+		if(max1<max3){
+			max1=max3;
+		}
+		if(min1>min2){
+			min1=min2;
+		}
+		if(min1>min3){
+			min1=min3;
+		}
+		int height1=max1-min1+1;
+		int width1=data1.rowCount()*5;
+		
+		BufferedImage sor=new BufferedImage(width1, height1, BufferedImage.TYPE_INT_RGB);
+		for(int i=0;i<data1.rowCount();i++){
+			int kpj=(int)data1.getDouble(i, "kpj")-min1;
+			int spj=(int)data1.getDouble(i, "spj")-min1;
+			int zgj=(int)data1.getDouble(i, "zgj")-min1;
+			int zdj=(int)data1.getDouble(i, "zdj")-min1;
+			int rgb=0xFFFFFF;
+			int hig=kpj;//每个K线的低点
+			int low=spj; //每个K线的高点
+			if(kpj<spj){
+				hig=spj;
+				low=kpj;
+			}
+			
+			for(int j=0;j<5;j++){
+				if(j!=2){//每个K线宽5像素，中间那根是最高最低线
+					for(int y=low;y<=hig;y++){
+						sor.setRGB((i*5)+j, y, rgb);
+					}
+				}else{
+					for(int y=zdj;y<=zgj;y++){
+						sor.setRGB((i*5)+j, y, rgb);
+					}
+				}
+			}
+		}	
+		return sor;
 	}
 	
 	//计算趋势特征串

@@ -32,7 +32,6 @@ public class ImageTransform {
 	 * @return double[][] 模糊后的图像信息矩阵
 	 */
 	private static double[][] gaussTran(double[][] source,int index){
-		
 		int height=source.length;
 		int width=source[0].length;
 		///保存高斯过滤后的结果
@@ -840,6 +839,7 @@ public class ImageTransform {
 			MyPoint mp2=null;
 			//double theta2=0;
 			int index2=0;
+			int xxx=index2;
 			for(;index2<vt2.size();index2++){
 
 				mp2=vt2.get(index2);
@@ -858,8 +858,11 @@ public class ImageTransform {
 				if(tempED<minED){
 					sMinED=minED;
 					minED=tempED;
+					xxx=index2;
 				}
 			}
+			
+			System.out.println("xxx:"+xxx);
 			
 			/**
 			 * ratio=0. 4　对于准确度要求高的匹配；
@@ -875,6 +878,8 @@ public class ImageTransform {
 			
 			vt1.set(index1, mp1);
 			vt2.set(index2-1, mp2);			
+			
+			System.out.println("index1:"+index1);
 		
 			similarNum++;///匹配上的点数目加一  
 		}
@@ -1030,27 +1035,5 @@ public class ImageTransform {
 		
 		return vctors;
 	}
-	
-	/**
-	 * 获取该张图片的所有特征向量的集合
-	 * @param img1
-	 * @return
-	 */
-	public static List<MyPoint> getCharacterVectors(double db[][]){
-		double start=System.currentTimeMillis();
-		///生成高斯金字塔
-		HashMap<Integer,double[][]> result=ImageTransform.getGaussPyramid(db, 20, 3,1.6);
-		double end=System.currentTimeMillis();
-		System.out.println("高斯金字塔费时："+(end-start));
-		//生成dog金字塔
-		HashMap<Integer,double[][]> dog=ImageTransform.gaussToDog(result, 6);
-		//初步获取特征点
-		HashMap<Integer,List<MyPoint>> keyPoints=ImageTransform.getRoughKeyPoint(dog,6);
-		///特征点过滤
-		keyPoints=ImageTransform.filterPoints(dog, keyPoints, 10,0.03);
-		List<MyPoint> vctors=getVectors(result, keyPoints);
-		return vctors;
-	}
-	
 	
 }
