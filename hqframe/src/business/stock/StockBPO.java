@@ -20,7 +20,6 @@ import com.framework.layer.BPO;
 import com.framework.pic.algorithm.sift.ImageTransform;
 import com.framework.pic.algorithm.sift.MyPoint;
 import com.framework.pic.utility.Image_Utility;
-import com.framework.sift.SIFT;
 import com.framework.util.DataObject;
 import com.framework.util.DataStore;
 import com.framework.util.DateUtil;
@@ -32,11 +31,56 @@ import com.framework.util.TransactionManager;
 
 public class StockBPO extends BPO{
 	
-	//对比股票片段与某只股票
-	public static void main(String[] str) throws Exception{
-		double sor[][];
-		double tar[][];
+	//对比股票片段与某只股票                                     1是片段                                                       2是对比目标
+	public static void getXsgp(String gpdm1,String jysc1,String gpdm2,String jysc2,int dbts) throws Exception{
+		Sql sql=new Sql();
+		sql.setSql("select tzc_1 from stock.stock_list where gpdm=? and jysc=? ");
+		sql.setString(1, gpdm1);
+		sql.setString(2, jysc1);
+		DataStore lsds1=sql.executeQuery();
+		if(lsds1.rowCount()==0){
+			return;
+		}
+		String tzc_1_sor=lsds1.getString(0, "tzc_1");
+		if(tzc_1_sor==null || "".equals(tzc_1_sor)){
+			return;
+		}
+		tzc_1_sor=tzc_1_sor.replace("NaN", "0");
 		
+		sql.setSql("select tzc_1 from stock.stock_list where gpdm=? and jysc=? ");
+		sql.setString(1, gpdm2);
+		sql.setString(2, jysc2);
+		DataStore lsds2=sql.executeQuery();
+		if(lsds2.rowCount()==0){
+			return;
+		}
+		String tzc_1_tar=lsds2.getString(0, "tzc_1");
+		if(tzc_1_tar==null || "".equals(tzc_1_tar)){
+			return;
+		}
+		tzc_1_tar=tzc_1_tar.replace("NaN", "0");
+		
+		System.out.println(tzc_1_sor);
+		System.out.println(tzc_1_tar);
+		
+		String a[]=tzc_1_sor.split(",");
+		int length1=a.length;
+		if(length1>dbts){
+			length1=dbts;
+		}
+		double sor[][]=new double[1][length1];
+		
+		String b[]=tzc_1_tar.split(",");
+		int length2=b.length;
+		double tar[][]=new double[1][length2];
+		
+		for(int i=length1-1;i>=0;i--){
+			int w=(a.length-1)-(length1-i-1);
+			sor[0][i]=Double.parseDouble(a[w]);
+		}
+		for(int i=0;i<length2;i++){
+			tar[0][i]=Double.parseDouble(b[i]);
+		}
 		
 		List<MyPoint> v1 = ImageTransform.getCharacterVectors(sor);
 		List<MyPoint> v2 = ImageTransform.getCharacterVectors(tar);
@@ -44,18 +88,44 @@ public class StockBPO extends BPO{
 		System.out.println("特征点数分别为：" + v1.size() + "&" + v2.size() + "  相似点数为：" + num);
 	}
 	
+	public static void main(String str[]) throws Exception{
+		getXsgp("002001","s","000007","s",60);
+	}
+	
 	//计算趋势特征串
 	public static void setTrendFeature() throws Exception{
 		Transaction tm=TransactionManager.getTransaction();
         tm.begin();
         Sql sql=new Sql();
-        //周线
-        sql.setSql("update stock.stock_list a " +
-        		"      set tzc_7=(select wm_concat(round(zdf,1)||'') zdf " +
-        		"				    from (select zdf " +
-        		" 						    from stock.stock_week_infor x " +
-        		"						   where x.gpdm=a.gpdm and x.jysc=a.jysc order by rq) as tem)");
-        sql.executeUpdate();
+        sql.setSql("select * from stock.stock_list");
+        DataStore lsds=sql.executeQuery();
+        for(int i=0;i<lsds.rowCount();i++){
+        	String gpdm=lsds.getString(i, "gpdm");
+        	String jysc=lsds.getString(i, "jysc");
+        	sql.setSql(" update stock.stock_list a " +
+        			"       set tzc_1=(select wm_concat(round(zdf,2)||'') zdf " +  //涨跌幅保留小数点后5位
+             		"				    from (select zdf " +
+             		" 						    from stock.stock_day_infor x " +
+             		"						   where x.gpdm=? and x.jysc=? order by rq) as tem) " +
+             		"	  where a.gpdm=? and a.jysc=? ");
+        	sql.setString(1, gpdm);
+        	sql.setString(2, jysc);
+        	sql.setString(3, gpdm);
+        	sql.setString(4, jysc);
+            sql.executeUpdate();
+            sql.setSql(" update stock.stock_list a " +
+        			"       set tzc_7=(select wm_concat(round(zdf,2)||'') zdf " +  //涨跌幅保留小数点后5位
+             		"				    from (select zdf " +
+             		" 						    from stock.stock_week_infor x " +
+             		"						   where x.gpdm=? and x.jysc=? order by rq) as tem) " +
+             		"	  where a.gpdm=? and a.jysc=? ");
+        	sql.setString(1, gpdm);
+        	sql.setString(2, jysc);
+        	sql.setString(3, gpdm);
+        	sql.setString(4, jysc);
+            sql.executeUpdate();
+            System.out.println(i+" "+jysc+" "+gpdm);
+        }
         tm.commitWithoutStart();
 	}
 	
