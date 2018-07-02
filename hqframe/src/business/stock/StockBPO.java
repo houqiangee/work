@@ -1,5 +1,6 @@
 package business.stock;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +9,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.imageio.ImageIO;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import com.framework.layer.BPO;
 import com.framework.pic.algorithm.sift.ImageTransform;
@@ -22,62 +28,230 @@ import com.framework.util.TransactionManager;
 
 
 public class StockBPO extends BPO{
+	public static DataStore DATADO=new DataStore();
 	
-	//对比股票片段与某只股票                                     1是片段                                                       2是对比目标
-	public static void getXsgp(String gpdm1,String jysc1,String gpdm2,String jysc2,int dbts) throws Exception{
-		double max1,max2,max3,min1,min2,min3;
-		Sql sql=new Sql();
-		sql.setSql("select kpj*100 kpj,spj*100 spj,zgj*100 zgj,zdj*100 zdj from stock.stock_day_infor where gpdm=? and jysc=? order by rq desc limit ? ");
-		sql.setString(1, gpdm1);
-		sql.setString(2, jysc1);
-		sql.setInt(3, dbts);
-		DataStore data1=sql.executeQuery();
-		if(data1.rowCount()==0){
+	//对比股票片段与某只股票                                     1是片段                                                     
+	public static void getXsgp(String gpdm1,String jysc1,int dbts) throws Exception{
+		if(dbts<30){
 			return;
 		}
-		sql.setSql("select max(kpj*100) max1,max(spj*100) max2,max(zgj*100) max3,min(kpj*100) min1,min(spj*100) min2,min(zdj*100) min3 " +
-				"     from (select * from stock.stock_day_infor where gpdm=? and jysc=? order by rq desc limit ?) as t ");
-		sql.setString(1, gpdm1);
-		sql.setString(2, jysc1);
+		DataStore xsgpds=new DataStore();
+		Sql sql=new Sql();
+		sql.setSql("select * from stock.stock_day_infor where jysc=? and gpdm=? order by rq desc limit ? ");
+		sql.setString(1, jysc1);
+		sql.setString(2, gpdm1);
 		sql.setInt(3, dbts);
-		DataStore topbot1=sql.executeQuery();
-		max1=topbot1.getDouble(0, "max1");
-		max2=topbot1.getDouble(0, "max2");
-		max3=topbot1.getDouble(0, "max3");
-		min1=topbot1.getDouble(0, "min1");
-		min2=topbot1.getDouble(0, "min2");
-		min3=topbot1.getDouble(0, "min3");
-		int max_sor=(int)max1;
-		if(max_sor<max2){
-			max_sor=(int)max2;
+		DataStore data1=sql.executeQuery();
+		if(data1.rowCount()<30){
+			return;
 		}
-		if(max_sor<max3){
-			max_sor=(int)max3;
+		data1.sort("rq");
+		dbts=data1.rowCount();
+		
+		BufferedImage sor=getStockKImg(jysc1,gpdm1,data1.getDate(0, "rq"),data1.getDate(dbts-1, "rq"));
+		File file1 = new File ("M:\\hqself\\img\\main.jpg");
+		ImageIO.write(sor,"jpg",file1);
+		
+		sql.setSql("select * from stock.stock_list a " +
+				"    where gpdm<>? and exists(select 1 " +
+				"							    from stock.stock_day_infor x " +
+				"							   where x.jysc=a.jysc and x.gpdm=a.gpdm) ");
+		sql.setString(1, gpdm1);
+		DataStore lsds=sql.executeQuery();
+		for(int g=0;g<lsds.rowCount();g++){
+			String jysc2=lsds.getString(g, "jysc");
+			String gpdm2=lsds.getString(g, "gpdm");
+			System.out.println(jysc2+" "+gpdm2+" "+g+"/"+lsds.rowCount());
+			sql.setSql("select * from stock.stock_day_infor where jysc=? and gpdm=? order by rq ");
+			sql.setString(1, jysc2);
+			sql.setString(2, gpdm2);
+			DataStore data2=sql.executeQuery();
+			if(data1.rowCount()<dbts){
+				return;
+			}
+			for(int i=0;i<data2.rowCount()-dbts;i++){
+				double tzc=0;//特征差
+				double zdxts=0;//涨跌相同数
+				for(int j=0;j<dbts;j++){
+					Double zdf1=data1.getDouble(j, "zdf");
+					Double zdf2=data2.getDouble(i+j, "zdf");
+					Double cz=zdf1-zdf2;
+					cz=cz>0?cz:(0-cz);
+					tzc+=cz;
+					if((zdf1>0 && zdf2>0) || (zdf1<0 && zdf2<0)){
+						zdxts++;
+					}
+				}
+				if(tzc<50 && ((zdxts*1.0)/dbts)>0.8){
+					Date rq=data2.getDate(i, "rq");
+					String qsrq=DateUtil.dateToString(data2.getDate(i, "rq"), "yyyy-MM-dd");
+					String zzrq=DateUtil.dateToString(data2.getDate(i+dbts, "rq"), "yyyy-MM-dd");
+					System.out.println(jysc2+"_"+gpdm2+"_"+qsrq+"至"+zzrq+i+"/"+data2.rowCount()+" "+tzc);
+					BufferedImage tar=getStockKImg(jysc2,gpdm2,rq,data2.getDate(i+dbts, "rq"));
+					File filet = new File ("M:\\hqself\\img\\xsd"+(zdxts-tzc)+"_"+jysc2+"_"+gpdm2+"_"+qsrq+"至"+zzrq+".jpg");
+					ImageIO.write(tar,"jpg",filet);
+					xsgpds.addRow();
+					int r=xsgpds.rowCount()-1;
+					xsgpds.put(r, "jysc", jysc2);
+					xsgpds.put(r, "gpdm", gpdm2);
+					xsgpds.put(r, "qsrq", qsrq);
+					xsgpds.put(r, "zzrq", zzrq);
+					xsgpds.put(r, "xsd", zdxts-tzc);//相似度。tzc越小越好，zdxts越大越好，xsd越大越相似
+				}
+			}
 		}
-		
-		
-		
-		
-		double sor[][]=new double[1][length1];
-		
-		double tar[][]=new double[1][length2];
-		
-		for(int i=length1-1;i>=0;i--){
-			int w=(a.length-1)-(length1-i-1);
-			sor[0][i]=Double.parseDouble(a[w]);
+		xsgpds.sortdesc("xsd");
+		while(xsgpds.rowCount()>10){//最多只留10行
+			xsgpds.remove(xsgpds.rowCount()-1);
 		}
-		for(int i=0;i<length2;i++){
-			tar[0][i]=Double.parseDouble(b[i]);
-		}
+		System.out.println(xsgpds.toJSON());
+	}
+	
+	//获取所有股票的相似股票
+	public static void getXsgp() throws Exception{
+		Sql sql=new Sql();
+		sql.setSql("select * from stock.stock_list a " +
+				"    where exists(select 1 " +
+				"							    from stock.stock_day_infor x " +
+				"							   where x.jysc=a.jysc and x.gpdm=a.gpdm) limit 10 ");
+		DataStore lsds=sql.executeQuery();
+		DATADO=new DataStore();
+		for(int i=0;i<lsds.rowCount();i++){
+        	String gpdm=lsds.getString(i, "gpdm");
+        	String jysc=lsds.getString(i, "jysc");
+            sql.setSql("select wm_concat(round(zdf,2)||'') zdf,wm_concat(to_char(rq,'yyyy-mm-dd')) rq " +  //涨跌幅保留小数点后5位
+             		"				    from (select zdf,rq " +
+             		" 						    from stock.stock_day_infor x " +
+             		"						   where x.gpdm=? and x.jysc=? order by rq) as t");
+        	sql.setString(1, gpdm);
+        	sql.setString(2, jysc);
+            DataStore ds=sql.executeQuery();
+            System.out.println(i+" "+jysc+" "+gpdm);
+            String zdf[]=ds.getString(0, "zdf").replace("NaN", "0").split(",");
+            String rq[]=ds.getString(0, "rq").split(",");
+            DATADO.addRow();
+            int r=DATADO.rowCount()-1;
+            DATADO.put(r,"jysc",jysc);
+            DATADO.put(r,"gpdm",gpdm);
+            DATADO.put(r,"zdf",zdf);
+            DATADO.put(r,"rq",rq);
+        }
 		
-		List<MyPoint> v1 = ImageTransform.getCharacterVectors(sor);
-		List<MyPoint> v2 = ImageTransform.getCharacterVectors(tar);
-		int num = ImageTransform.getSimilarPointsNum(v1, v2);
-		System.out.println("特征点数分别为：" + v1.size() + "&" + v2.size() + "  相似点数为：" + num);
+		for(int g=0;g<lsds.rowCount();g++){
+			String jysc2=lsds.getString(g, "jysc");
+			String gpdm2=lsds.getString(g, "gpdm");
+			if(findThreadsCount()<20){
+				GetXsgpThread thread = new GetXsgpThread(gpdm2,jysc2,30);
+				Thread t=new Thread(thread);
+				t.start();
+			}else{
+				while(findThreadsCount()>=20){//最多只运行100个线程
+					Thread.sleep(1000);
+				}
+				GetXsgpThread thread = new GetXsgpThread(gpdm2,jysc2,30);
+				Thread t=new Thread(thread);
+				t.start();
+			}
+		}
 	}
 	
 	public static void main(String str[]) throws Exception{
-		getXsgp("002001","s","000007","s",60);
+		getXsgp();
+	}
+	
+    /**
+     *  获取Java VM中当前运行的线程总数
+     * @return
+     */
+    public static int findThreadsCount() {
+        ThreadGroup group = Thread.currentThread().getThreadGroup();
+        ThreadGroup topGroup = group;
+        // 遍历线程组树，获取根线程组
+        while (group != null) {
+            topGroup = group;
+            group = group.getParent();
+        }
+        // 激活的线程数加倍
+        int estimatedSize = topGroup.activeCount() * 2;
+        Thread[] slacks = new Thread[estimatedSize];
+         //获取根线程组的所有线程
+        int actualSize = topGroup.enumerate(slacks);
+        Thread[] threads = new Thread[actualSize];
+        System.arraycopy(slacks, 0, threads, 0, actualSize);
+        return threads.length;
+    }
+	
+	//获取股票图片
+	public static BufferedImage getStockKImg(String jysc,String gpdm,Date qssj,Date zzsj) throws Exception{
+		int max1,max2,max3,min1,min2,min3;
+		Sql sql=new Sql();
+		sql.setSql("select rq,kpj*100 kpj,spj*100 spj,zgj*100 zgj,zdj*100 zdj " +
+				"	  from stock.stock_day_infor where jysc=? and gpdm=? and rq between ? and ? order by rq");
+		sql.setString(1, jysc);
+		sql.setString(2, gpdm);
+		sql.setDate(3, qssj);
+		sql.setDate(4, zzsj);
+		DataStore data1=sql.executeQuery();
+		if(data1.rowCount()==0){
+			return null;
+		}
+		sql.setSql("select max(kpj*100) max1,max(spj*100) max2,max(zgj*100) max3,min(kpj*100) min1,min(spj*100) min2,min(zdj*100) min3 " +
+				" 	  from stock.stock_day_infor where jysc=? and gpdm=? and rq between ? and ? ");
+		sql.setString(1, jysc);
+		sql.setString(2, gpdm);
+		sql.setDate(3, qssj);
+		sql.setDate(4, zzsj);
+		DataStore count1=sql.executeQuery();
+		max1=(int)count1.getDouble(0, "max1");
+		max2=(int)count1.getDouble(0, "max2");
+		max3=(int)count1.getDouble(0, "max3");
+		min1=(int)count1.getDouble(0, "min1");
+		min2=(int)count1.getDouble(0, "min2");
+		min3=(int)count1.getDouble(0, "min3");
+		if(max1<max2){
+			max1=max2;
+		}
+		if(max1<max3){
+			max1=max3;
+		}
+		if(min1>min2){
+			min1=min2;
+		}
+		if(min1>min3){
+			min1=min3;
+		}
+		int height1=max1-min1+1;
+		int width1=data1.rowCount()*5;
+		
+		BufferedImage sor=new BufferedImage(width1, height1+2, BufferedImage.TYPE_INT_RGB);
+		for(int i=0;i<data1.rowCount();i++){
+			int kpj=(int)data1.getDouble(i, "kpj")-min1;
+			int spj=(int)data1.getDouble(i, "spj")-min1;
+			int zgj=(int)data1.getDouble(i, "zgj")-min1;
+			int zdj=(int)data1.getDouble(i, "zdj")-min1;
+			Date rq=data1.getDate(i, "rq");
+			int rgb=0x00FF00;
+			int hig=kpj;//每个K线的低点
+			int low=spj; //每个K线的高点
+			if(kpj<spj){
+				hig=spj;
+				low=kpj;
+				rgb=0xFF0000;
+			}
+			
+			for(int j=0;j<5;j++){
+				if(j!=2){//每个K线宽5像素，中间那根是最高最低线
+					for(int y=low;y<=hig;y++){
+						sor.setRGB((i*5)+j, height1-y, rgb);//左上角是0，0,所以要height1-y
+					}
+				}else{
+					for(int y=zdj;y<=zgj;y++){
+						sor.setRGB((i*5)+j, height1-y, rgb);
+					}
+				}
+			}
+		}	
+		return sor;
 	}
 	
 	//计算趋势特征串
@@ -762,11 +936,12 @@ public class StockBPO extends BPO{
 		sql.setSql("select wm_concat(to_char(rq,'yyyy/mm/dd')||'#'||kpj||'#'||spj||'#'||zde||'#'||zdf||'%#'||zdj||'#'||zgj) as re " +
 				"     from " +
 				"  (select * from stock.stock_day_infor " +
-				"	 where gpdm=? and jysc=? and kpj<>0 and rq>? " +
+				"	 where gpdm=? and jysc=? and kpj<>0 and rq between ? and ? " +
 				"	 order by rq ) as m ");
 		sql.setString(1, gpdm);
 		sql.setString(2, jysc);
 		sql.setDate(3, DateUtil.addDay(DateUtil.getDBDate(), -2*365));
+		sql.setDate(4, DateUtil.getDBDate());
 		DataStore vds=sql.executeQuery();
 		if(vds.rowCount()>0){
 			re=vds.getString(0, "re");
