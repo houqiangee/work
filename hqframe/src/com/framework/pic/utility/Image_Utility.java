@@ -1,7 +1,11 @@
 package com.framework.pic.utility;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.GregorianCalendar;
+
+import javax.imageio.ImageIO;
 
 /**
  * 数字图像处理辅助类
@@ -421,10 +425,17 @@ public class Image_Utility {
 			for(int i=0;i<width;i++){
 				int rgb=image.getRGB(i, j);
 				int grey=(rgb>>16)&0xFF;
-				System.out.println(grey);
 				result[j][i]=grey;
-				
+				image.setRGB(i, j, grey);
 			}
+		}
+		File file1 = new File ("D:\\3.jpg");
+		String format = "jpg";
+		try {
+			ImageIO.write(image,format,file1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		 return result ;
 	}
