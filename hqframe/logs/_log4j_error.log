@@ -55,3 +55,361 @@
 = 2018-05-23 20:20:58,995 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
 = 2018-05-23 20:26:34,337 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
 = 2018-05-23 20:26:47,507 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-05-24 22:02:25,969 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 10:53:24,355 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 10:54:08,247 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 10:58:28,891 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 10:58:42,507 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 10:59:08,180 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 11:02:14,057 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 11:52:50,788 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 11:55:07,323 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:00:33,459 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:01:41,953 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:05:18,904 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:06:06,688 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:15:14,469 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:15:34,364 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:15:45,546 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:17:56,462 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:18:16,485 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:18:47,185 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:19:02,195 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:19:47,927 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:26:07,966 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:27:00,313 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:31:47,677 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:35:13,420 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 12:35:30,386 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 13:21:40,331 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 13:27:50,239 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 13:31:54,056 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 13:32:20,586 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 13:32:41,696 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 13:33:35,037 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 13:46:12,113 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 13:46:34,514 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 13:47:50,142 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 13:48:51,665 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 13:50:43,807 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 13:52:26,698 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 13:54:33,906 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 13:58:30,536 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 13:59:28,405 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 14:05:05,662 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 14:05:20,623 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 14:06:30,459 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 14:07:38,061 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 14:08:50,367 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 14:09:23,272 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 14:09:49,038 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 17:16:35,219 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 17:18:05,817 ERROR com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1234) -recyle error
+org.postgresql.util.PSQLException: This connection has been closed.
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.checkClosed(AbstractJdbc2Connection.java:861)
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.clearWarnings(AbstractJdbc2Connection.java:739)
+	at com.alibaba.druid.pool.DruidConnectionHolder.reset(DruidConnectionHolder.java:237)
+	at com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1190)
+	at com.alibaba.druid.pool.DruidPooledConnection.recycle(DruidPooledConnection.java:285)
+	at com.alibaba.druid.pool.DruidPooledConnection.close(DruidPooledConnection.java:235)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doCloseConnection(DataSourceUtils.java:341)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doReleaseConnection(DataSourceUtils.java:328)
+	at org.springframework.jdbc.datasource.DataSourceUtils.releaseConnection(DataSourceUtils.java:294)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:647)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:684)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:716)
+	at com.framework.util.Sql.executeSelectSQL(Sql.java:332)
+	at com.framework.util.Sql.executeQuery(Sql.java:270)
+	at business.stock.GetXsgpThread.run(GetXsgpThread.java:29)
+	at java.lang.Thread.run(Thread.java:745)
+= 2018-07-02 17:18:05,919 ERROR com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1234) -recyle error
+org.postgresql.util.PSQLException: This connection has been closed.
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.checkClosed(AbstractJdbc2Connection.java:861)
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.rollback(AbstractJdbc2Connection.java:878)
+	at com.alibaba.druid.pool.DruidPooledConnection.rollback(DruidPooledConnection.java:737)
+	at com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1186)
+	at com.alibaba.druid.pool.DruidPooledConnection.recycle(DruidPooledConnection.java:285)
+	at com.alibaba.druid.pool.DruidPooledConnection.close(DruidPooledConnection.java:235)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doCloseConnection(DataSourceUtils.java:341)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doReleaseConnection(DataSourceUtils.java:328)
+	at org.springframework.jdbc.datasource.DataSourceUtils.releaseConnection(DataSourceUtils.java:294)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:647)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:684)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:716)
+	at com.framework.util.Sql.executeSelectSQL(Sql.java:332)
+	at com.framework.util.Sql.executeQuery(Sql.java:270)
+	at business.stock.GetXsgpThread.run(GetXsgpThread.java:41)
+	at java.lang.Thread.run(Thread.java:745)
+= 2018-07-02 17:18:05,903 ERROR com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1234) -recyle error
+org.postgresql.util.PSQLException: An I/O error occurred while sending to the backend.
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:201)
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.executeTransactionCommand(AbstractJdbc2Connection.java:832)
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.rollback(AbstractJdbc2Connection.java:885)
+	at com.alibaba.druid.pool.DruidPooledConnection.rollback(DruidPooledConnection.java:737)
+	at com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1186)
+	at com.alibaba.druid.pool.DruidPooledConnection.recycle(DruidPooledConnection.java:285)
+	at com.alibaba.druid.pool.DruidPooledConnection.close(DruidPooledConnection.java:235)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doCloseConnection(DataSourceUtils.java:341)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doReleaseConnection(DataSourceUtils.java:328)
+	at org.springframework.jdbc.datasource.DataSourceUtils.releaseConnection(DataSourceUtils.java:294)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:647)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:684)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:716)
+	at com.framework.util.Sql.executeSelectSQL(Sql.java:332)
+	at com.framework.util.Sql.executeQuery(Sql.java:270)
+	at business.stock.GetXsgpThread.run(GetXsgpThread.java:41)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.IOException: Unexpected packet type: 48
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2057)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:173)
+	... 16 more
+= 2018-07-02 17:18:05,902 ERROR com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1234) -recyle error
+org.postgresql.util.PSQLException: This connection has been closed.
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.checkClosed(AbstractJdbc2Connection.java:861)
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.rollback(AbstractJdbc2Connection.java:878)
+	at com.alibaba.druid.pool.DruidPooledConnection.rollback(DruidPooledConnection.java:737)
+	at com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1186)
+	at com.alibaba.druid.pool.DruidPooledConnection.recycle(DruidPooledConnection.java:285)
+	at com.alibaba.druid.pool.DruidPooledConnection.close(DruidPooledConnection.java:235)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doCloseConnection(DataSourceUtils.java:341)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doReleaseConnection(DataSourceUtils.java:328)
+	at org.springframework.jdbc.datasource.DataSourceUtils.releaseConnection(DataSourceUtils.java:294)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:647)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:684)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:716)
+	at com.framework.util.Sql.executeSelectSQL(Sql.java:332)
+	at com.framework.util.Sql.executeQuery(Sql.java:270)
+	at business.stock.GetXsgpThread.run(GetXsgpThread.java:41)
+	at java.lang.Thread.run(Thread.java:745)
+= 2018-07-02 17:18:05,862 ERROR com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1234) -recyle error
+org.postgresql.util.PSQLException: This connection has been closed.
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.checkClosed(AbstractJdbc2Connection.java:861)
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.rollback(AbstractJdbc2Connection.java:878)
+	at com.alibaba.druid.pool.DruidPooledConnection.rollback(DruidPooledConnection.java:737)
+	at com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1186)
+	at com.alibaba.druid.pool.DruidPooledConnection.recycle(DruidPooledConnection.java:285)
+	at com.alibaba.druid.pool.DruidPooledConnection.close(DruidPooledConnection.java:235)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doCloseConnection(DataSourceUtils.java:341)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doReleaseConnection(DataSourceUtils.java:328)
+	at org.springframework.jdbc.datasource.DataSourceUtils.releaseConnection(DataSourceUtils.java:294)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:647)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:684)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:716)
+	at com.framework.util.Sql.executeSelectSQL(Sql.java:332)
+	at com.framework.util.Sql.executeQuery(Sql.java:270)
+	at business.stock.GetXsgpThread.run(GetXsgpThread.java:41)
+	at java.lang.Thread.run(Thread.java:745)
+= 2018-07-02 17:18:06,109 ERROR com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1234) -recyle error
+org.postgresql.util.PSQLException: This connection has been closed.
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.checkClosed(AbstractJdbc2Connection.java:861)
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.clearWarnings(AbstractJdbc2Connection.java:739)
+	at com.alibaba.druid.pool.DruidConnectionHolder.reset(DruidConnectionHolder.java:237)
+	at com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1190)
+	at com.alibaba.druid.pool.DruidPooledConnection.recycle(DruidPooledConnection.java:285)
+	at com.alibaba.druid.pool.DruidPooledConnection.close(DruidPooledConnection.java:235)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doCloseConnection(DataSourceUtils.java:341)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doReleaseConnection(DataSourceUtils.java:328)
+	at org.springframework.jdbc.datasource.DataSourceUtils.releaseConnection(DataSourceUtils.java:294)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:647)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:684)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:716)
+	at com.framework.util.Sql.executeSelectSQL(Sql.java:332)
+	at com.framework.util.Sql.executeQuery(Sql.java:270)
+	at business.stock.GetXsgpThread.run(GetXsgpThread.java:29)
+	at java.lang.Thread.run(Thread.java:745)
+= 2018-07-02 17:18:06,131 ERROR com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1234) -recyle error
+org.postgresql.util.PSQLException: An I/O error occurred while sending to the backend.
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:201)
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.executeTransactionCommand(AbstractJdbc2Connection.java:832)
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.rollback(AbstractJdbc2Connection.java:885)
+	at com.alibaba.druid.pool.DruidPooledConnection.rollback(DruidPooledConnection.java:737)
+	at com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1186)
+	at com.alibaba.druid.pool.DruidPooledConnection.recycle(DruidPooledConnection.java:285)
+	at com.alibaba.druid.pool.DruidPooledConnection.close(DruidPooledConnection.java:235)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doCloseConnection(DataSourceUtils.java:341)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doReleaseConnection(DataSourceUtils.java:328)
+	at org.springframework.jdbc.datasource.DataSourceUtils.releaseConnection(DataSourceUtils.java:294)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:647)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:684)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:716)
+	at com.framework.util.Sql.executeSelectSQL(Sql.java:332)
+	at com.framework.util.Sql.executeQuery(Sql.java:270)
+	at business.stock.GetXsgpThread.run(GetXsgpThread.java:29)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.IOException: Unexpected packet type: 0
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2057)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:173)
+	... 16 more
+= 2018-07-02 17:24:15,990 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 17:25:41,915 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 17:25:58,576 ERROR com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:1701) -create connection error
+java.lang.OutOfMemoryError: GC overhead limit exceeded
+= 2018-07-02 17:26:13,241 ERROR com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1234) -recyle error
+org.postgresql.util.PSQLException: This connection has been closed.
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.checkClosed(AbstractJdbc2Connection.java:861)
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.rollback(AbstractJdbc2Connection.java:878)
+	at com.alibaba.druid.pool.DruidPooledConnection.rollback(DruidPooledConnection.java:737)
+	at com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1186)
+	at com.alibaba.druid.pool.DruidPooledConnection.recycle(DruidPooledConnection.java:285)
+	at com.alibaba.druid.pool.DruidPooledConnection.close(DruidPooledConnection.java:235)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doCloseConnection(DataSourceUtils.java:341)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doReleaseConnection(DataSourceUtils.java:328)
+	at org.springframework.jdbc.datasource.DataSourceUtils.releaseConnection(DataSourceUtils.java:294)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:647)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:684)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:716)
+	at com.framework.util.Sql.executeSelectSQL(Sql.java:332)
+	at com.framework.util.Sql.executeQuery(Sql.java:270)
+	at business.stock.GetXsgpThread.run(GetXsgpThread.java:41)
+	at java.lang.Thread.run(Thread.java:745)
+= 2018-07-02 17:26:19,175 ERROR com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1234) -recyle error
+org.postgresql.util.PSQLException: This connection has been closed.
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.checkClosed(AbstractJdbc2Connection.java:861)
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.clearWarnings(AbstractJdbc2Connection.java:739)
+	at com.alibaba.druid.pool.DruidConnectionHolder.reset(DruidConnectionHolder.java:237)
+	at com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1190)
+	at com.alibaba.druid.pool.DruidPooledConnection.recycle(DruidPooledConnection.java:285)
+	at com.alibaba.druid.pool.DruidPooledConnection.close(DruidPooledConnection.java:235)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doCloseConnection(DataSourceUtils.java:341)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doReleaseConnection(DataSourceUtils.java:328)
+	at org.springframework.jdbc.datasource.DataSourceUtils.releaseConnection(DataSourceUtils.java:294)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:647)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:684)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:716)
+	at com.framework.util.Sql.executeSelectSQL(Sql.java:332)
+	at com.framework.util.Sql.executeQuery(Sql.java:270)
+	at business.stock.GetXsgpThread.run(GetXsgpThread.java:41)
+	at java.lang.Thread.run(Thread.java:745)
+= 2018-07-02 17:26:20,076 ERROR com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1234) -recyle error
+org.postgresql.util.PSQLException: This connection has been closed.
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.checkClosed(AbstractJdbc2Connection.java:861)
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.clearWarnings(AbstractJdbc2Connection.java:739)
+	at com.alibaba.druid.pool.DruidConnectionHolder.reset(DruidConnectionHolder.java:237)
+	at com.alibaba.druid.pool.DruidDataSource.recycle(DruidDataSource.java:1190)
+	at com.alibaba.druid.pool.DruidPooledConnection.recycle(DruidPooledConnection.java:285)
+	at com.alibaba.druid.pool.DruidPooledConnection.close(DruidPooledConnection.java:235)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doCloseConnection(DataSourceUtils.java:341)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doReleaseConnection(DataSourceUtils.java:328)
+	at org.springframework.jdbc.datasource.DataSourceUtils.releaseConnection(DataSourceUtils.java:294)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:647)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:684)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:716)
+	at com.framework.util.Sql.executeSelectSQL(Sql.java:332)
+	at com.framework.util.Sql.executeQuery(Sql.java:270)
+	at business.stock.GetXsgpThread.run(GetXsgpThread.java:41)
+	at java.lang.Thread.run(Thread.java:745)
+= 2018-07-02 18:33:02,636 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 18:41:22,252 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:02:04,533 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:04:24,813 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:04:36,621 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:11:18,607 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:11:59,210 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:14:47,996 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:17:06,506 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:17:23,742 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:20:41,223 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:27:59,349 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:28:25,762 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:28:32,026 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:28:56,895 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:30:26,749 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:31:10,362 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:31:40,234 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:32:56,969 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:34:07,793 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:35:27,632 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:39:14,724 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:39:57,150 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:40:07,358 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:40:32,291 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:40:45,003 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:40:55,586 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:41:22,316 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:42:15,153 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:43:52,623 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:48:47,692 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:50:38,300 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:51:52,737 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:57:04,813 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:58:18,199 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:58:41,411 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 20:59:12,197 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 21:01:50,090 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 21:03:40,063 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 21:05:43,463 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 21:06:42,920 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 21:20:15,602 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 21:25:18,239 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 21:27:15,624 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 21:27:44,480 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 21:28:05,119 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 21:31:22,723 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-02 21:31:32,920 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 08:37:25,470 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 08:38:02,011 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 08:39:25,378 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 08:40:20,675 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 11:59:19,887 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 11:59:57,364 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:00:56,903 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:02:54,825 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:05:19,154 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:06:48,803 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:07:59,042 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:08:13,078 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:09:41,374 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:21:20,319 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:22:13,651 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:22:47,135 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:23:46,420 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:24:40,041 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:25:44,225 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:26:23,811 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:26:32,910 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:27:15,874 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:27:32,982 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:30:21,410 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:31:17,793 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:31:58,441 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:33:37,941 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:34:43,811 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:35:26,442 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:44:32,376 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:45:00,972 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:47:37,592 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:47:50,941 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:49:29,006 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:49:52,839 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 12:52:46,408 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:07:38,159 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:08:27,660 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:11:22,997 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:15:22,592 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:17:03,592 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:17:47,938 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:19:06,023 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:19:25,063 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:20:07,460 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:21:44,947 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:23:49,987 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:24:48,939 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:28:08,456 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:28:42,846 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:31:05,756 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 13:32:39,737 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 19:12:47,252 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 19:18:09,184 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 19:18:57,308 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 19:21:02,765 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 19:22:11,222 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 19:26:24,964 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 19:27:27,390 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 19:28:04,083 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 19:29:32,332 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 19:36:58,841 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 19:37:11,004 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 19:38:41,013 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 19:40:30,113 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 19:41:17,719 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
+= 2018-07-03 19:43:59,414 ERROR com.alibaba.druid.pool.DruidDataSource.validationQueryCheck(DruidDataSource.java:774) -testOnBorrow is true, testOnReturn is true, testWhileIdle is true, validationQuery not set
