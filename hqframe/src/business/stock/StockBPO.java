@@ -47,8 +47,12 @@ public class StockBPO extends BPO{
 		data1.sort("rq");
 		dbts=data1.rowCount();
 		
+		String path="D:\\work\\hqself\\img";
+		
+		deleteDir(path);
+		
 		BufferedImage sor=getStockKImg(jysc1,gpdm1,data1.getDate(0, "rq"),data1.getDate(dbts-1, "rq"));
-		File file1 = new File ("M:\\hqself\\img\\main.jpg");
+		File file1 = new File (path+"\\main.jpg");
 		ImageIO.write(sor,"jpg",file1);
 		
 		sql.setSql("select * from stock.stock_list where jysc=? and gpdm=? ");
@@ -65,8 +69,8 @@ public class StockBPO extends BPO{
 			String qsrq=job.getString("qsrq");
 			String zzrq=job.getString("zzrq");
 			String xsd=job.getString("xsd");
-			BufferedImage tar=getStockKImg(jysc2,gpdm2,DateUtil.stringToDate(qsrq),DateUtil.addDay(DateUtil.stringToDate(zzrq), 45));
-			File file2 = new File ("M:\\hqself\\img\\"+jysc2+"_"+gpdm2+"_"+xsd+".jpg");
+			BufferedImage tar=getStockKImg(jysc2,gpdm2,DateUtil.stringToDate(qsrq),DateUtil.stringToDate(zzrq));
+			File file2 = new File (path+"\\"+jysc2+"_"+gpdm2+"_"+xsd+".jpg");
 			ImageIO.write(tar,"jpg",file2);
 		}
 	}
@@ -77,7 +81,7 @@ public class StockBPO extends BPO{
 		sql.setSql("select * from stock.stock_list a " +
 				"    where exists(select 1 " +
 				"							    from stock.stock_day_infor x " +
-				"							   where x.jysc=a.jysc and x.gpdm=a.gpdm) and jysc='h' limit 100 ");
+				"							   where x.jysc=a.jysc and x.gpdm=a.gpdm) and jysc='h' limit 300 ");
 		DataStore lsds=sql.executeQuery();
 		DATADO=new DataStore();
 		for(int i=0;i<lsds.rowCount();i++){
@@ -120,9 +124,33 @@ public class StockBPO extends BPO{
 	}
 	
 	public static void main(String str[]) throws Exception{
-		getXsgpImg("601727","h",45);
+		getXsgpImg("600415","h",45);
 		//getXsgp(45);
 	}
+	
+	
+	public static boolean deleteDir(String path){
+		File file = new File(path);
+		if(!file.exists()){//判断是否待删除目录是否存在
+			System.err.println("The dir are not exists!");
+			return false;
+		}
+		
+		String[] content = file.list();//取得当前目录下所有文件和文件夹
+		for(String name : content){
+			File temp = new File(path, name);
+			if(temp.isDirectory()){//判断是否是目录
+				deleteDir(temp.getAbsolutePath());//递归调用，删除目录里的内容
+				temp.delete();//删除空目录
+			}else{
+				if(!temp.delete()){//直接删除文件
+					System.err.println("Failed to delete " + name);
+				}
+			}
+		}
+		return true;
+	}
+
 	
     /**
      *  获取Java VM中当前运行的线程总数

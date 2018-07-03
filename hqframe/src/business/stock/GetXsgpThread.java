@@ -42,7 +42,7 @@ public class GetXsgpThread implements Runnable{
 			}
 			data1.sort("rq");
 			dbts=data1.rowCount();
-			double tzx=dbts*1.5;//特征界限，当特征差大于特征线时说明差距过大
+			double tzx=dbts;//特征界限，当特征差大于特征线时说明差距过大
 			
 			for(int u=0;u<StockBPO.DATADO.rowCount();u++){
 				String jysc2=StockBPO.DATADO.getString(u, "jysc");
