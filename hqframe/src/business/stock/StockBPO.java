@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Date;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,8 +15,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.framework.layer.BPO;
-import com.framework.pic.algorithm.sift.ImageTransform;
-import com.framework.pic.algorithm.sift.MyPoint;
 import com.framework.util.DataObject;
 import com.framework.util.DataStore;
 import com.framework.util.DateUtil;
@@ -31,15 +28,14 @@ public class StockBPO extends BPO{
 	public static DataStore DATADO=new DataStore();
 	
 	//对比股票片段与某只股票                            
-	public static void getXsgpImg(String gpdm1,String jysc1,int dbts) throws Exception{
+	public static void getXsgpImg(String gpdm1,int dbts) throws Exception{
 		if(dbts<30){
 			return;
 		}
 		Sql sql=new Sql();
-		sql.setSql("select * from stock.stock_day_infor where jysc=? and gpdm=? order by rq desc limit ? ");
-		sql.setString(1, jysc1);
-		sql.setString(2, gpdm1);
-		sql.setInt(3, dbts);
+		sql.setSql("select * from stock.stock_day_infor where gpdm=? order by rq desc limit ? ");
+		sql.setString(1, gpdm1);
+		sql.setInt(2, dbts);
 		DataStore data1=sql.executeQuery();
 		if(data1.rowCount()<30){
 			return;
@@ -51,26 +47,24 @@ public class StockBPO extends BPO{
 		
 		deleteDir(path);
 		
-		BufferedImage sor=getStockKImg(jysc1,gpdm1,data1.getDate(0, "rq"),data1.getDate(dbts-1, "rq"));
+		BufferedImage sor=getStockKImg(gpdm1,data1.getDate(0, "rq"),data1.getDate(dbts-1, "rq"));
 		File file1 = new File (path+"\\main.jpg");
 		ImageIO.write(sor,"jpg",file1);
 		
-		sql.setSql("select * from stock.stock_list where jysc=? and gpdm=? ");
-		sql.setString(1, jysc1);
-		sql.setString(2, gpdm1);
+		sql.setSql("select * from stock.stock_list where gpdm=? ");
+		sql.setString(1, gpdm1);
 		DataStore lsds=sql.executeQuery();
 		String tzc_1=lsds.getString(0, "tzc_1");
 		JSONArray ja=JSONArray.fromObject(tzc_1);
 		
 		for(int i=0;i<ja.size();i++){
 			JSONObject job = ja.getJSONObject(i);
-			String jysc2=job.getString("jysc");
 			String gpdm2=job.getString("gpdm");
 			String qsrq=job.getString("qsrq");
 			String zzrq=job.getString("zzrq");
 			String xsd=job.getString("xsd");
-			BufferedImage tar=getStockKImg(jysc2,gpdm2,DateUtil.stringToDate(qsrq),DateUtil.stringToDate(zzrq));
-			File file2 = new File (path+"\\"+jysc2+"_"+gpdm2+"_"+xsd+".jpg");
+			BufferedImage tar=getStockKImg(gpdm2,DateUtil.stringToDate(qsrq),DateUtil.stringToDate(zzrq));
+			File file2 = new File (path+"\\"+gpdm2+"_"+xsd+".jpg");
 			ImageIO.write(tar,"jpg",file2);
 		}
 	}
@@ -81,42 +75,38 @@ public class StockBPO extends BPO{
 		sql.setSql("select * from stock.stock_list a " +
 				"    where exists(select 1 " +
 				"							    from stock.stock_day_infor x " +
-				"							   where x.jysc=a.jysc and x.gpdm=a.gpdm) and jysc='h' limit 300 ");
+				"							   where x.gpdm=a.gpdm) limit 300 ");
 		DataStore lsds=sql.executeQuery();
 		DATADO=new DataStore();
 		for(int i=0;i<lsds.rowCount();i++){
         	String gpdm=lsds.getString(i, "gpdm");
-        	String jysc=lsds.getString(i, "jysc");
             sql.setSql("select wm_concat(round(spj,2)||'') zdf,wm_concat(to_char(rq,'yyyy-mm-dd')) rq " +  //涨跌幅保留小数点后5位
              		"				    from (select spj,rq " +
              		" 						    from stock.stock_day_infor x " +
-             		"						   where x.gpdm=? and x.jysc=? order by rq) as t");
+             		"						   where x.gpdm=? order by rq) as t");
         	sql.setString(1, gpdm);
-        	sql.setString(2, jysc);
             DataStore ds=sql.executeQuery();
-            System.out.println(i+" "+jysc+" "+gpdm);
+            System.out.println(i+" "+gpdm);
             String zdf[]=ds.getString(0, "zdf").replace("NaN", "0").split(",");
             String rq[]=ds.getString(0, "rq").split(",");
             DATADO.addRow();
             int r=DATADO.rowCount()-1;
-            DATADO.put(r,"jysc",jysc);
             DATADO.put(r,"gpdm",gpdm);
             DATADO.put(r,"zdf",zdf);
             DATADO.put(r,"rq",rq);
         }
 		
 		for(int g=0;g<lsds.rowCount();g++){
-			String jysc2=lsds.getString(g, "jysc");
 			String gpdm2=lsds.getString(g, "gpdm");
 			if(findThreadsCount()<20){
-				GetXsgpThread thread = new GetXsgpThread(gpdm2,jysc2,dbts);
+				GetXsgpThread thread = new GetXsgpThread(gpdm2,dbts);
 				Thread t=new Thread(thread);
 				t.start();
 			}else{
 				while(findThreadsCount()>=20){//最多只运行100个线程
 					Thread.sleep(1000);
 				}
-				GetXsgpThread thread = new GetXsgpThread(gpdm2,jysc2,dbts);
+				GetXsgpThread thread = new GetXsgpThread(gpdm2,dbts);
 				Thread t=new Thread(thread);
 				t.start();
 			}
@@ -124,7 +114,7 @@ public class StockBPO extends BPO{
 	}
 	
 	public static void main(String str[]) throws Exception{
-		getXsgpImg("600415","h",45);
+		getXsgpImg("600415",45);
 		//getXsgp(45);
 	}
 	
@@ -175,25 +165,23 @@ public class StockBPO extends BPO{
     }
 	
 	//获取股票图片
-	public static BufferedImage getStockKImg(String jysc,String gpdm,Date qssj,Date zzsj) throws Exception{
+	public static BufferedImage getStockKImg(String gpdm,Date qssj,Date zzsj) throws Exception{
 		int max1,max2,max3,min1,min2,min3;
 		Sql sql=new Sql();
 		sql.setSql("select rq,kpj*100 kpj,spj*100 spj,zgj*100 zgj,zdj*100 zdj " +
-				"	  from stock.stock_day_infor where jysc=? and gpdm=? and rq between ? and ? order by rq");
-		sql.setString(1, jysc);
-		sql.setString(2, gpdm);
-		sql.setDate(3, qssj);
-		sql.setDate(4, zzsj);
+				"	  from stock.stock_day_infor where gpdm=? and rq between ? and ? order by rq");
+		sql.setString(1, gpdm);
+		sql.setDate(2, qssj);
+		sql.setDate(3, zzsj);
 		DataStore data1=sql.executeQuery();
 		if(data1.rowCount()==0){
 			return null;
 		}
 		sql.setSql("select max(kpj*100) max1,max(spj*100) max2,max(zgj*100) max3,min(kpj*100) min1,min(spj*100) min2,min(zdj*100) min3 " +
-				" 	  from stock.stock_day_infor where jysc=? and gpdm=? and rq between ? and ? ");
-		sql.setString(1, jysc);
-		sql.setString(2, gpdm);
-		sql.setDate(3, qssj);
-		sql.setDate(4, zzsj);
+				" 	  from stock.stock_day_infor where gpdm=? and rq between ? and ? ");
+		sql.setString(1, gpdm);
+		sql.setDate(2, qssj);
+		sql.setDate(3, zzsj);
 		DataStore count1=sql.executeQuery();
 		max1=(int)count1.getDouble(0, "max1");
 		max2=(int)count1.getDouble(0, "max2");
@@ -256,30 +244,25 @@ public class StockBPO extends BPO{
         DataStore lsds=sql.executeQuery();
         for(int i=0;i<lsds.rowCount();i++){
         	String gpdm=lsds.getString(i, "gpdm");
-        	String jysc=lsds.getString(i, "jysc");
         	sql.setSql(" update stock.stock_list a " +
         			"       set tzc_1=(select wm_concat(round(zdf,2)||'') zdf " +  //涨跌幅保留小数点后5位
              		"				    from (select zdf " +
              		" 						    from stock.stock_day_infor x " +
-             		"						   where x.gpdm=? and x.jysc=? order by rq) as tem) " +
-             		"	  where a.gpdm=? and a.jysc=? ");
+             		"						   where x.gpdm=? order by rq) as tem) " +
+             		"	  where a.gpdm=? ");
         	sql.setString(1, gpdm);
-        	sql.setString(2, jysc);
-        	sql.setString(3, gpdm);
-        	sql.setString(4, jysc);
+        	sql.setString(2, gpdm);
             sql.executeUpdate();
             sql.setSql(" update stock.stock_list a " +
         			"       set tzc_7=(select wm_concat(round(zdf,2)||'') zdf " +  //涨跌幅保留小数点后5位
              		"				    from (select zdf " +
              		" 						    from stock.stock_week_infor x " +
-             		"						   where x.gpdm=? and x.jysc=? order by rq) as tem) " +
-             		"	  where a.gpdm=? and a.jysc=? ");
+             		"						   where x.gpdm=? order by rq) as tem) " +
+             		"	  where a.gpdm=? ");
         	sql.setString(1, gpdm);
-        	sql.setString(2, jysc);
-        	sql.setString(3, gpdm);
-        	sql.setString(4, jysc);
+        	sql.setString(2, gpdm);
             sql.executeUpdate();
-            System.out.println(i+" "+jysc+" "+gpdm);
+            System.out.println(i+" "+gpdm);
         }
         tm.commitWithoutStart();
 	}
@@ -328,14 +311,12 @@ public class StockBPO extends BPO{
 		Transaction tm=TransactionManager.getTransaction();
         tm.begin();
         Sql sql=new Sql();
-		String jysc[][]={{"1","s"},{"0","h"}};
-        for(int s=0;s<2;s++){
         	sql.setSql("select a.gpdm," +
-        			"		   (select min(rq) from stock.stock_day_infor x where x.jysc=a.jysc and x.gpdm=a.gpdm) zqrq," +
-        			"		   (select max(rq) from stock.stock_day_infor x where x.jysc=a.jysc and x.gpdm=a.gpdm) zhrq," +
-        			"		   (select max(rq) from stock.stock_week_infor x where x.jysc=a.jysc and x.gpdm=a.gpdm) zhweek" +
+        			"		   (select min(rq) from stock.stock_day_infor x where x.gpdm=a.gpdm) zqrq," +
+        			"		   (select max(rq) from stock.stock_day_infor x where x.gpdm=a.gpdm) zhrq," +
+        			"		   (select max(rq) from stock.stock_week_infor x where x.gpdm=a.gpdm) zhweek" +
         			"	  from stock.stock_list a " +
-        			"    where jysc='"+jysc[s][1]+"' order by gpdm ");
+        			"    order by gpdm ");
         	DataStore gpds=sql.executeQuery();
         	int rowc=gpds.rowCount();
         	for(int k=0;k<rowc;k++){
@@ -347,7 +328,7 @@ public class StockBPO extends BPO{
         			//没数据的不算，上市不足7天的不算
         			continue;
         		}
-        		System.out.println(jysc[s][1]+" "+gpdm);
+        		System.out.println(gpdm);
         		Date zhou0,zhou6;//每周的第一天（周日）和最后一天（周六）
         		Double qsp;//前收盘价
         		if(zhweek==null){//如果从没计算过，则先算出来第一个周的最后一天(周日算每周第一天)
@@ -356,29 +337,29 @@ public class StockBPO extends BPO{
         			sql.setSql("select " +
         					"  (select max(rq) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zhweek," +
+        					"    where rq>=? and rq<=? and gpdm=? ) zhweek," +
         					"  (select max(zgj) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zgj," +
+        					"    where rq>=? and rq<=? and gpdm=? ) zgj," +
         					"  (select min(zdj) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zdj," +
+        					"    where rq>=? and rq<=? and gpdm=? ) zdj," +
         					"  (select kpj " +
-        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"' " +
+        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=? " +
         					"	   and rq=(select min(rq) " +
         					"    			 from stock.stock_day_infor " +
-        					"   		    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"')) kpj," +
+        					"   		    where rq>=? and rq<=? and gpdm=?)) kpj," +
         					"  (select spj " +
-        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"' " +
+        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=? " +
         					"	   and rq=(select min(rq) " +
         					"    			 from stock.stock_day_infor " +
-        					"   		    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"')) spj," +
+        					"   		    where rq>=? and rq<=? and gpdm=? )) spj," +
         					"  (select sum(cjl) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') cjl," +
+        					"    where rq>=? and rq<=? and gpdm=? ) cjl," +
         					"  (select sum(cjje) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') cjje " +
+        					"    where rq>=? and rq<=? and gpdm=? ) cjje " +
         					" from dual ");
         			int index=1;
         			sql.setDate(index++, zhou0);
@@ -423,12 +404,12 @@ public class StockBPO extends BPO{
         			qsp=kpj;
         			
         			sql.setSql("insert into stock.stock_week_infor( " +
-        					"		   jysc, gpdm, rq, spj, zgj," +
+        					"		   ltsz, gpdm, rq, spj, zgj," +
         					"		   zdj, kpj, qsp, zde, zdf," +
-        					"		   cjl, cjje,hsl,zsz,ltsz) " +
+        					"		   cjl, cjje,hsl,zsz) " +
         					"   select ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,? from dual " +
-        					"    where not exists(select 1 from stock.stock_week_infor where jysc=? and gpdm=? and rq=?) ");
-        			sql.setString(1, jysc[s][1]);
+        					"    where not exists(select 1 from stock.stock_week_infor where gpdm=? and rq=?) ");
+        			sql.setDouble(1, 0);
         			sql.setString(2, gpdm);
         			sql.setDate(3, zhweek);
         			sql.setDouble(4,spj);
@@ -442,10 +423,8 @@ public class StockBPO extends BPO{
         			sql.setDouble(12,cjje);
         			sql.setDouble(13, 0);
         			sql.setDouble(14, 0);
-        			sql.setDouble(15, 0);
-        			sql.setString(16, jysc[s][1]);
-        			sql.setString(17, gpdm);
-        			sql.setDate(18, zhweek);
+        			sql.setString(15, gpdm);
+        			sql.setDate(16, zhweek);
         			sql.executeUpdate();
         			//插完第一条后，准备后续的循环数据
         			qsp=spj;
@@ -455,8 +434,8 @@ public class StockBPO extends BPO{
         			zhou0=DateUtil.addDay(zhweek,0-DateUtil.getWeek(zhweek));
         			zhou6=DateUtil.addDay(zhou0, 6);
         			sql.setSql("select spj from stock.stock_day_infor " +
-        					"	 where gpdm=? and jysc='"+jysc[s][1]+"' " +
-        					"      and rq=(select max(rq) from stock.stock_day_infor where rq<? and gpdm=? and jysc='"+jysc[s][1]+"'  )");
+        					"	 where gpdm=? " +
+        					"      and rq=(select max(rq) from stock.stock_day_infor where rq<? and gpdm=?  )");
         			sql.setString(1, gpdm);
         			sql.setDate(2, zhou0);
         			sql.setString(3, gpdm);
@@ -466,7 +445,7 @@ public class StockBPO extends BPO{
         			}else{
         				qsp=lsds1.getDouble(0, "spj");
         			}
-        			sql.setSql("delete from stock.stock_week_infor where gpdm=? and jysc='"+jysc[s][1]+"' and rq=? ");
+        			sql.setSql("delete from stock.stock_week_infor where gpdm=? and rq=? ");
         			sql.setString(1, gpdm);
         			sql.setDate(2, zhweek);
         			sql.executeUpdate();
@@ -477,29 +456,29 @@ public class StockBPO extends BPO{
         			sql.setSql("select " +
         					"  (select max(rq) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zhweek," +
+        					"    where rq>=? and rq<=? and gpdm=? ) zhweek," +
         					"  (select max(zgj) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zgj," +
+        					"    where rq>=? and rq<=? and gpdm=? ) zgj," +
         					"  (select min(zdj) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zdj," +
+        					"    where rq>=? and rq<=? and gpdm=? ) zdj," +
         					"  (select kpj " +
-        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"' " +
+        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=?  " +
         					"	   and rq=(select min(rq) " +
         					"    			 from stock.stock_day_infor " +
-        					"   		    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"')) kpj," +
+        					"   		    where rq>=? and rq<=? and gpdm=? )) kpj," +
         					"  (select spj " +
-        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"' " +
+        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=?  " +
         					"	   and rq=(select min(rq) " +
         					"    			 from stock.stock_day_infor " +
-        					"   		    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"')) spj," +
+        					"   		    where rq>=? and rq<=? and gpdm=? )) spj," +
         					"  (select sum(cjl) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') cjl," +
+        					"    where rq>=? and rq<=? and gpdm=? ) cjl," +
         					"  (select sum(cjje) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') cjje " +
+        					"    where rq>=? and rq<=? and gpdm=? ) cjje " +
         					" from dual ");
         			int index=1;
         			sql.setDate(index++, zhou0);
@@ -549,12 +528,12 @@ public class StockBPO extends BPO{
         			}
         			
         			sql.setSql("insert into stock.stock_week_infor( " +
-        					"		   jysc, gpdm, rq, spj, zgj," +
+        					"		   ltsz, gpdm, rq, spj, zgj," +
         					"		   zdj, kpj, qsp, zde, zdf," +
-        					"		   cjl, cjje,hsl,zsz,ltsz) " +
+        					"		   cjl, cjje,hsl,zsz) " +
         					"   select ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,? from dual " +
-        					"    where not exists(select 1 from stock.stock_week_infor where jysc=? and gpdm=? and rq=?) ");
-        			sql.setString(1, jysc[s][1]);
+        					"    where not exists(select 1 from stock.stock_week_infor where gpdm=? and rq=?) ");
+        			sql.setDouble(1, 0);
         			sql.setString(2, gpdm);
         			sql.setDate(3, zhweek);
         			sql.setDouble(4,spj);
@@ -568,10 +547,8 @@ public class StockBPO extends BPO{
         			sql.setDouble(12,cjje);
         			sql.setDouble(13, 0);
         			sql.setDouble(14, 0);
-        			sql.setDouble(15, 0);
-        			sql.setString(16, jysc[s][1]);
-        			sql.setString(17, gpdm);
-        			sql.setDate(18, zhweek);
+        			sql.setString(15, gpdm);
+        			sql.setDate(16, zhweek);
         			sql.executeUpdate();
         			tm.commit();
         			//准备下一个循环的数据
@@ -580,7 +557,6 @@ public class StockBPO extends BPO{
         			zhou6=DateUtil.addDay(zhou0, 6);
         		}
         	}
-        }
         System.out.println("end");
 	}
 	
@@ -589,14 +565,12 @@ public class StockBPO extends BPO{
 		Transaction tm=TransactionManager.getTransaction();
         tm.begin();
         Sql sql=new Sql();
-		String jysc[][]={{"1","s"},{"0","h"}};
-        for(int s=0;s<2;s++){
         	sql.setSql("select a.gpdm," +
-        			"		   (select min(rq) from stock.stock_day_infor x where x.jysc=a.jysc and x.gpdm=a.gpdm) zqrq," +
-        			"		   (select max(rq) from stock.stock_day_infor x where x.jysc=a.jysc and x.gpdm=a.gpdm) zhrq," +
-        			"		   (select max(rq) from stock.stock_month_infor x where x.jysc=a.jysc and x.gpdm=a.gpdm) zhweek" +
+        			"		   (select min(rq) from stock.stock_day_infor x where x.gpdm=a.gpdm) zqrq," +
+        			"		   (select max(rq) from stock.stock_day_infor x where x.gpdm=a.gpdm) zhrq," +
+        			"		   (select max(rq) from stock.stock_month_infor x where x.gpdm=a.gpdm) zhweek" +
         			"	  from stock.stock_list a " +
-        			"    where jysc='"+jysc[s][1]+"' order by gpdm ");
+        			"    order by gpdm ");
         	DataStore gpds=sql.executeQuery();
         	int rowc=gpds.rowCount();
         	for(int k=0;k<rowc;k++){
@@ -608,7 +582,7 @@ public class StockBPO extends BPO{
         			//没数据的不算，上市不足7天的不算
         			continue;
         		}
-        		System.out.println(jysc[s][1]+" "+gpdm);
+        		System.out.println(gpdm);
         		Date zhou0,zhou6;//每周的第一天（周日）和最后一天（周六）
         		Double qsp;//前收盘价
         		if(zhweek==null){//如果从没计算过，则先算出来第一个周的最后一天(周日算每周第一天)
@@ -617,29 +591,29 @@ public class StockBPO extends BPO{
         			sql.setSql("select " +
         					"  (select max(rq) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zhweek," +
+        					"    where rq>=? and rq<=? and gpdm=? ) zhweek," +
         					"  (select max(zgj) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zgj," +
+        					"    where rq>=? and rq<=? and gpdm=? ) zgj," +
         					"  (select min(zdj) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zdj," +
+        					"    where rq>=? and rq<=? and gpdm=? ) zdj," +
         					"  (select kpj " +
-        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"' " +
+        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=?  " +
         					"	   and rq=(select min(rq) " +
         					"    			 from stock.stock_day_infor " +
-        					"   		    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"')) kpj," +
+        					"   		    where rq>=? and rq<=? and gpdm=? )) kpj," +
         					"  (select spj " +
-        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"' " +
+        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=?  " +
         					"	   and rq=(select min(rq) " +
         					"    			 from stock.stock_day_infor " +
-        					"   		    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"')) spj," +
+        					"   		    where rq>=? and rq<=? and gpdm=? )) spj," +
         					"  (select sum(cjl) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') cjl," +
+        					"    where rq>=? and rq<=? and gpdm=? ) cjl," +
         					"  (select sum(cjje) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') cjje " +
+        					"    where rq>=? and rq<=? and gpdm=? ) cjje " +
         					" from dual ");
         			int index=1;
         			sql.setDate(index++, zhou0);
@@ -684,12 +658,12 @@ public class StockBPO extends BPO{
         			qsp=kpj;
         			
         			sql.setSql("insert into stock.stock_month_infor( " +
-        					"		   jysc, gpdm, rq, spj, zgj," +
+        					"		   ltsz, gpdm, rq, spj, zgj," +
         					"		   zdj, kpj, qsp, zde, zdf," +
-        					"		   cjl, cjje,hsl,zsz,ltsz) " +
+        					"		   cjl, cjje,hsl,zsz) " +
         					"   select ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,? from dual " +
-        					"    where not exists(select 1 from stock.stock_month_infor where jysc=? and gpdm=? and rq=?) ");
-        			sql.setString(1, jysc[s][1]);
+        					"    where not exists(select 1 from stock.stock_month_infor where gpdm=? and rq=?) ");
+        			sql.setDouble(1, 0);
         			sql.setString(2, gpdm);
         			sql.setDate(3, zhweek);
         			sql.setDouble(4,spj);
@@ -703,10 +677,8 @@ public class StockBPO extends BPO{
         			sql.setDouble(12,cjje);
         			sql.setDouble(13, 0);
         			sql.setDouble(14, 0);
-        			sql.setDouble(15, 0);
-        			sql.setString(16, jysc[s][1]);
-        			sql.setString(17, gpdm);
-        			sql.setDate(18, zhweek);
+        			sql.setString(15, gpdm);
+        			sql.setDate(16, zhweek);
         			sql.executeUpdate();
         			//插完第一条后，准备后续的循环数据
         			qsp=spj;
@@ -716,8 +688,8 @@ public class StockBPO extends BPO{
         			zhou0=DateUtil.addDay(zhweek,0-DateUtil.getWeek(zhweek));
         			zhou6=DateUtil.addDay(zhou0, 6);
         			sql.setSql("select spj from stock.stock_day_infor " +
-        					"	 where gpdm=? and jysc='"+jysc[s][1]+"' " +
-        					"      and rq=(select max(rq) from stock.stock_day_infor where rq<? and gpdm=? and jysc='"+jysc[s][1]+"'  )");
+        					"	 where gpdm=?  " +
+        					"      and rq=(select max(rq) from stock.stock_day_infor where rq<? and gpdm=?   )");
         			sql.setString(1, gpdm);
         			sql.setDate(2, zhou0);
         			sql.setString(3, gpdm);
@@ -727,7 +699,7 @@ public class StockBPO extends BPO{
         			}else{
         				qsp=lsds1.getDouble(0, "spj");
         			}
-        			sql.setSql("delete from stock.stock_month_infor where gpdm=? and jysc='"+jysc[s][1]+"' and rq=? ");
+        			sql.setSql("delete from stock.stock_month_infor where gpdm=?  and rq=? ");
         			sql.setString(1, gpdm);
         			sql.setDate(2, zhweek);
         			sql.executeUpdate();
@@ -738,29 +710,29 @@ public class StockBPO extends BPO{
         			sql.setSql("select " +
         					"  (select max(rq) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zhweek," +
+        					"    where rq>=? and rq<=? and gpdm=? ) zhweek," +
         					"  (select max(zgj) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zgj," +
+        					"    where rq>=? and rq<=? and gpdm=? ) zgj," +
         					"  (select min(zdj) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') zdj," +
+        					"    where rq>=? and rq<=? and gpdm=? ) zdj," +
         					"  (select kpj " +
-        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"' " +
+        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=?  " +
         					"	   and rq=(select min(rq) " +
         					"    			 from stock.stock_day_infor " +
-        					"   		    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"')) kpj," +
+        					"   		    where rq>=? and rq<=? and gpdm=? )) kpj," +
         					"  (select spj " +
-        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"' " +
+        					"	  from stock.stock_day_infor where rq>=? and rq<=? and gpdm=?  " +
         					"	   and rq=(select min(rq) " +
         					"    			 from stock.stock_day_infor " +
-        					"   		    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"')) spj," +
+        					"   		    where rq>=? and rq<=? and gpdm=? )) spj," +
         					"  (select sum(cjl) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') cjl," +
+        					"    where rq>=? and rq<=? and gpdm=? ) cjl," +
         					"  (select sum(cjje) " +
         					"     from stock.stock_day_infor " +
-        					"    where rq>=? and rq<=? and gpdm=? and jysc='"+jysc[s][1]+"') cjje " +
+        					"    where rq>=? and rq<=? and gpdm=? ) cjje " +
         					" from dual ");
         			int index=1;
         			sql.setDate(index++, zhou0);
@@ -810,12 +782,12 @@ public class StockBPO extends BPO{
         			}
         			
         			sql.setSql("insert into stock.stock_month_infor( " +
-        					"		   jysc, gpdm, rq, spj, zgj," +
+        					"		   ltsz, gpdm, rq, spj, zgj," +
         					"		   zdj, kpj, qsp, zde, zdf," +
-        					"		   cjl, cjje,hsl,zsz,ltsz) " +
+        					"		   cjl, cjje,hsl,zsz) " +
         					"   select ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,? from dual " +
-        					"    where not exists(select 1 from stock.stock_month_infor where jysc=? and gpdm=? and rq=?) ");
-        			sql.setString(1, jysc[s][1]);
+        					"    where not exists(select 1 from stock.stock_month_infor where gpdm=? and rq=?) ");
+        			sql.setDouble(1, 0);
         			sql.setString(2, gpdm);
         			sql.setDate(3, zhweek);
         			sql.setDouble(4,spj);
@@ -829,10 +801,8 @@ public class StockBPO extends BPO{
         			sql.setDouble(12,cjje);
         			sql.setDouble(13, 0);
         			sql.setDouble(14, 0);
-        			sql.setDouble(15, 0);
-        			sql.setString(16, jysc[s][1]);
-        			sql.setString(17, gpdm);
-        			sql.setDate(18, zhweek);
+        			sql.setString(15, gpdm);
+        			sql.setDate(16, zhweek);
         			sql.executeUpdate();
         			tm.commit();
         			//准备下一个循环的数据
@@ -841,7 +811,6 @@ public class StockBPO extends BPO{
         			zhou6=DateUtil.addDay(zhou0, 6);
         		}
         	}
-        }
         System.out.println("end");
 	}
 	
@@ -856,7 +825,7 @@ public class StockBPO extends BPO{
         String jysc[][]={{"0","h"},{"1","s"}};
         for(int s=0;s<2;s++){
         	sql.setSql("select a.gpdm," +
-        			"		   (select max(rq) from stock.stock_day_infor x where x.jysc=a.jysc and x.gpdm=a.gpdm) zhrq" +
+        			"		   (select max(rq) from stock.stock_day_infor x where x.gpdm=a.gpdm) zhrq" +
         			"	  from stock.stock_list a " +
         			"    where jysc='"+jysc[s][1]+"' order by gpdm ");
         	DataStore gpds=sql.executeQuery();
@@ -885,12 +854,12 @@ public class StockBPO extends BPO{
         			}
         			String one[]=data[i].replace("None", "0").split(",");//0日期,1股票代码,2名称,3收盘价,4最高价,5最低价,6开盘价,7前收盘,8涨跌额,9涨跌幅,10换手率,11成交量,12成交金额,13总市值,14流通市值
         			sql.setSql("insert into stock.stock_day_infor( " +
-        					"		   jysc, gpdm, rq, spj, zgj," +
+        					"		   ltsz, gpdm, rq, spj, zgj," +
         					"		   zdj, kpj, qsp, zde, zdf," +
-        					"		   cjl, cjje,hsl,zsz,ltsz) " +
+        					"		   cjl, cjje,hsl,zsz) " +
         					"   select ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,? from dual " +
-        					"    where not exists(select 1 from stock.stock_day_infor where jysc=? and gpdm=? and rq=?) ");
-        			sql.setString(1, jysc[s][1]);
+        					"    where not exists(select 1 from stock.stock_day_infor where gpdm=? and rq=?) ");
+        			sql.setDouble(1, Double.parseDouble(one[14]));
         			sql.setString(2, gpdm);
         			sql.setDate(3, DateUtil.stringToDate(one[0], "yyyy-MM-dd"));
         			sql.setDouble(4, Double.parseDouble(one[3]));
@@ -904,14 +873,12 @@ public class StockBPO extends BPO{
         			sql.setDouble(12, Double.parseDouble(one[12]));
         			sql.setDouble(13, Double.parseDouble(one[10]));
         			sql.setDouble(14, Double.parseDouble(one[13]));
-        			sql.setDouble(15, Double.parseDouble(one[14]));
-        			sql.setString(16, jysc[s][1]);
-        			sql.setString(17, gpdm);
-        			sql.setDate(18, DateUtil.stringToDate(one[0], "yyyy-MM-dd"));
+        			sql.setString(15, gpdm);
+        			sql.setDate(16, DateUtil.stringToDate(one[0], "yyyy-MM-dd"));
         			sql.executeUpdate();
         		}
         		tm.commit();
-        		System.out.println(jysc[s][1]+" "+gpdm+" 完成"+k+"/"+rowc);
+        		System.out.println(gpdm+" 完成"+k+"/"+rowc);
         	}
         }
         System.out.println("js");
@@ -925,14 +892,12 @@ public class StockBPO extends BPO{
 		DataObject vdo=new DataObject();
 		String re="";
 		String gpdm=para.getString("gpdm");
-		String jysc=para.getString("jysc");
 		sql.setSql("select wm_concat(to_char(rq,'yyyy/mm/dd')||'#'||kpj||'#'||spj||'#'||zde||'#'||zdf||'%#'||zdj||'#'||zgj) as re " +
 				"     from " +
 				"  (select * from stock.stock_day_infor " +
-				"	 where gpdm=? and jysc=? and kpj<>0 and rq between ? and ? " +
+				"	 where gpdm=? and kpj<>0 and rq between ? and ? " +
 				"	 order by rq ) as m ");
 		sql.setString(1, gpdm);
-		sql.setString(2, jysc);
 		sql.setDate(3, DateUtil.addDay(DateUtil.getDBDate(), -2*365));
 		sql.setDate(4, DateUtil.getDBDate());
 		DataStore vds=sql.executeQuery();

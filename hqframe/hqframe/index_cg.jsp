@@ -11,13 +11,6 @@ String version=System.currentTimeMillis()+"";
 				<div class="layui-form-item layui-form-mid">
 					<div class="layui-inline">
 						<div class="layui-input-inline">
-							<select name="jysc">
-								<option value="">请选择交易市场</option>
-								<option value="h" selected="">沪</option>
-								<option value="s">深</option>
-							</select>
-						</div>
-						<div class="layui-input-inline">
 							<input type="text" name="gpdm" lay-verify="title" autocomplete="off" placeholder="请输入股票代码" class="layui-input">
 						</div>
 						<div class="layui-input-inline">
@@ -36,6 +29,36 @@ String version=System.currentTimeMillis()+"";
 </div>
 <script>
 
+$(function() {
+    var availableTags = [
+      "ActionScript",
+      "AppleScript",
+      "Asp",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+    $("#tags").autocomplete({
+      source: availableTags
+    });
+});
+
 layui.use(['form', 'layedit'], function(){
 	var form = layui.form
 	,layer = layui.layer
@@ -43,7 +66,7 @@ layui.use(['form', 'layedit'], function(){
 	
 	//监听提交
 	form.on('submit(fxgp)', function(data){
-		showOneStockK(data.field.gpdm,data.field.jysc);
+		showOneStockK(data.field.gpdm);
 		return false;
 	});
 	
@@ -53,17 +76,13 @@ layui.use(['form', 'layedit'], function(){
 	})
 });
 
-function showOneStockK(gpdm,jysc){
+function showOneStockK(gpdm){
 	if(gpdm==null ||gpdm==""){
 		layer.msg('请填写股票代码'); 
 		return false;
 	}
-	if(jysc==null ||jysc==""){
-		layer.msg('请选择交易市场'); 
-		return false;
-	}
 	
-	var url = "Stock.do?action=showOneStockK&gpdm="+gpdm+"&jysc="+jysc+"&_="+new Date();  
+	var url = "Stock.do?action=showOneStockK&gpdm="+gpdm+"&_="+new Date();  
 	AjaxUtil.aReq(url,function(dates){
     	var result=JSON.parse(dates);
     	var re=result.re;
@@ -238,6 +257,6 @@ function showOneStockK(gpdm,jysc){
 	});
 }
 
-showOneStockK("000001","h");
+showOneStockK("000001");
 
 </script> 

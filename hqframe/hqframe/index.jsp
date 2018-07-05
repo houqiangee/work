@@ -30,12 +30,12 @@ String version=System.currentTimeMillis()+"";
     	<div class="logo" >
       		<img src="./image/index/logo.png" alt="zizizhu">
     	</div>
-		<li class="layui-nav-item layui-this"><a href="javascript:;" data-mk="xw">读个新闻</a></li>
+		<li class="layui-nav-item layui-this"><a href="javascript:;" data-mk="cg">相似股票</a></li>
+		<li class="layui-nav-item"><a href="javascript:;" data-mk="xw">读个新闻</a></li>
 		<li class="layui-nav-item"><a href="javascript:;" data-mk="sp">看个视频</a></li>
-		<li class="layui-nav-item"><a href="javascript:;" data-mk="cg">炒个股票</a></li>
 		<li class="layui-nav-item"><a href="javascript:;" data-mk="yx">玩个游戏</a></li>
-		<li class="layui-nav-item"><a href="javascript:;" data-mk="xq">找个大象</a></li>
-		<li class="layui-nav-item"><a href="javascript:;" data-mk="lt">侃个大山</a></li>
+		<li class="layui-nav-item"><a href="javascript:;" data-mk="lt">意见建议</a></li>
+		<li class="layui-nav-item"><a href="javascript:;" data-mk="xq">联系我们</a></li>
 	</ul>
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">
@@ -60,6 +60,8 @@ String version=System.currentTimeMillis()+"";
 <script>
 function showIndexPage(mk){
 	var url = "index_"+mk+".jsp?_="+new Date();  
+	
+	
 	var data = {type:1};  
 	$.ajax({  
 	    type : "get",  

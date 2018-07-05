@@ -13,11 +13,9 @@ import com.framework.util.TransactionManager;
 //计算相似股票线程
 public class GetXsgpThread implements Runnable{
 	String gpdm1="";
-	String jysc1="";
 	int dbts=0;
-	public GetXsgpThread(String gpdm1,String jysc1,int dbts){
+	public GetXsgpThread(String gpdm1,int dbts){
 		this.gpdm1=gpdm1;
-		this.jysc1=jysc1;
 		this.dbts=dbts;
 	}
 	public void run() {
@@ -25,17 +23,16 @@ public class GetXsgpThread implements Runnable{
 	}
 	
 	public void dobus(){
-		System.out.println(this.jysc1+":"+this.gpdm1);
+		System.out.println(this.gpdm1);
 		try {
 			if(dbts<30){
 				return;
 			}
 			DataStore xsgpds=new DataStore();
 			Sql sql=new Sql();
-			sql.setSql("select * from stock.stock_day_infor where jysc=? and gpdm=? order by rq desc limit ? ");
-			sql.setString(1, jysc1);
-			sql.setString(2, gpdm1);
-			sql.setInt(3, dbts);
+			sql.setSql("select * from stock.stock_day_infor where gpdm=? order by rq desc limit ? ");
+			sql.setString(1, gpdm1);
+			sql.setInt(1, dbts);
 			DataStore data1=sql.executeQuery();
 			if(data1.rowCount()<30){
 				return;
@@ -45,9 +42,8 @@ public class GetXsgpThread implements Runnable{
 			double tzx=dbts;//特征界限，当特征差大于特征线时说明差距过大
 			
 			for(int u=0;u<StockBPO.DATADO.rowCount();u++){
-				String jysc2=StockBPO.DATADO.getString(u, "jysc");
 				String gpdm2=StockBPO.DATADO.getString(u, "gpdm");
-				if(gpdm2.equals(gpdm1) && jysc2.equals(jysc1)){
+				if(gpdm2.equals(gpdm1)){
 					continue;
 				}
 				
@@ -79,7 +75,6 @@ public class GetXsgpThread implements Runnable{
 					if(tzc<tzx){
 						xsgpds.addRow();
 						int r=xsgpds.rowCount()-1;
-						xsgpds.put(r, "jysc", jysc2);
 						xsgpds.put(r, "gpdm", gpdm2);
 						xsgpds.put(r, "qsrq", rq[i]);
 						xsgpds.put(r, "zzrq", rq[i+dbts]);
@@ -95,14 +90,13 @@ public class GetXsgpThread implements Runnable{
 			Transaction tm=TransactionManager.getTransaction();
 	        tm.begin();
 	        sql.setSql(" update stock.stock_list a " +
-        			"       set tzc_1=?,xsfxrq=(select max(rq) as rq from stock.stock_day_infor x where x.gpdm=a.gpdm and x.jysc=a.jysc) " +
-             		"	  where a.gpdm=? and a.jysc=? ");
+        			"       set tzc_1=?,xsfxrq=(select max(rq) as rq from stock.stock_day_infor x where x.gpdm=a.gpdm ) " +
+             		"	  where a.gpdm=?  ");
 	        sql.setString(1, xsgpds.toJSON());
         	sql.setString(2, gpdm1);
-        	sql.setString(3, jysc1);
         	sql.executeUpdate();
         	tm.commitWithoutStart();
-			System.out.println("=="+jysc1+"："+gpdm1+"=="+xsgpds.toJSON());
+			System.out.println("=="+gpdm1+"=="+xsgpds.toJSON());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
