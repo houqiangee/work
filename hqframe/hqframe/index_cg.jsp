@@ -11,7 +11,7 @@ String version=System.currentTimeMillis()+"";
 				<div class="layui-form-item layui-form-mid">
 					<div class="layui-inline">
 						<div class="layui-input-inline">
-							<input type="text" name="gpdm" lay-verify="title" autocomplete="off" placeholder="请输入股票代码" class="layui-input">
+							<input type="text" id="gpdm" name="gpdm" lay-verify="title" autocomplete="off" placeholder="请输入股票代码" class="layui-input">
 						</div>
 						<div class="layui-input-inline">
 							<button class="layui-btn" lay-submit="" lay-filter="fxgp">分析</button>
@@ -22,7 +22,7 @@ String version=System.currentTimeMillis()+"";
 		</div>
 	</div>
 	<div id="cg-k-line-div" >
-		<div id="cg-k-line" style="height: 500px;width: 1000px;margin-left: auto;margin-right: auto" >
+		<div id="cg-k-line" style="height: 400px;width: 600px;margin-left: auto;margin-right: auto" >
 		
 		</div>
 	</div>
@@ -54,7 +54,7 @@ $(function() {
       "Scala",
       "Scheme"
     ];
-    $("#tags").autocomplete({
+    $("#index-cg-main #gpdm").autocomplete({
       source: availableTags
     });
 });
@@ -76,6 +76,41 @@ layui.use(['form', 'layedit'], function(){
 	})
 });
 
+
+function splitData(rawData) {
+    var categoryData = [];
+    var values = [];
+    var volumes = [];
+    for (var i = 0; i < rawData.length; i++) {
+        categoryData.push(rawData[i].splice(0, 1)[0]);
+        values.push(rawData[i]);
+        volumes.push([i, rawData[i][4], rawData[i][0] > rawData[i][1] ? 1 : -1]);
+    }
+
+    return {
+        categoryData: categoryData,
+        values: values,
+        volumes: volumes
+    };
+}
+
+function calculateMA(dayCount, data) {
+	console.log(data.values);
+    var result = [];
+    for (var i = 0, len = data.values.length; i < len; i++) {
+        if (i < dayCount) {
+            result.push('-');
+            continue;
+        }
+        var sum = 0;
+        for (var j = 0; j < dayCount; j++) {
+            sum += parseFloat(data.values[i - j][1]);
+        }
+        result.push(+(sum / dayCount).toFixed(3));
+    }
+    return result;
+}
+
 function showOneStockK(gpdm){
 	if(gpdm==null ||gpdm==""){
 		layer.msg('请填写股票代码'); 
@@ -84,6 +119,10 @@ function showOneStockK(gpdm){
 	
 	var url = "Stock.do?action=showOneStockK&gpdm="+gpdm+"&_="+new Date();  
 	AjaxUtil.aReq(url,function(dates){
+		var myChart = echarts.init(document.getElementById("cg-k-line"));
+		var upColor = "#00da3c";
+		var downColor = "#ec0000";
+		
     	var result=JSON.parse(dates);
     	var re=result.re;
     	var eachday=re.split(",");
@@ -93,167 +132,228 @@ function showOneStockK(gpdm){
     			rawData.push(eachday[i].split("#"));
     		}
     	}
-    	
-    	function calculateMA(dayCount, data) {
-    	    var result = [];
-    	    for (var i = 0, len = data.length; i < len; i++) {
-    	        if (i < dayCount) {
-    	            result.push('-');
-    	            continue;
-    	        }
-    	        var sum = 0;
-    	        for (var j = 0; j < dayCount; j++) {
-    	            sum += data[i - j][1];
-    	        }
-    	        result.push(sum / dayCount);
-    	    }
-    	    return result;
-    	}
 
+        var data = splitData(rawData);
 
-    	var dates = rawData.map(function (item) {
-    	    return item[0];
-    	});
-
-    	var data = rawData.map(function (item) {
-    	    return [+item[1], +item[2], +item[5], +item[6]];
-    	});
-    	var option = {
-    	    backgroundColor: '#21202D',
-    	    legend: {
-    	        data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30','MA60'],
-    	        inactiveColor: '#777',
-    	        textStyle: {
-    	            color: '#fff'
-    	        }
-    	    },
-    	    tooltip: {
-    	        trigger: 'axis',
-    	        axisPointer: {
-    	            animation: false,
-    	            type: 'cross',
-    	            lineStyle: {
-    	                color: '#376df4',
-    	                width: 2,
-    	                opacity: 1
-    	            }
-    	        }
-    	    },
-    	    xAxis: {
-    	        type: 'category',
-    	        data: dates,
-    	        axisLine: { lineStyle: { color: '#8392A5' } }
-    	    },
-    	    yAxis: {
-    	        scale: true,
-    	        axisLine: { lineStyle: { color: '#8392A5' } },
-    	        splitLine: { show: false }
-    	    },
-    	    grid: {
-    	        bottom: 80
-    	    },
-    	    dataZoom: [{
-    	        textStyle: {
-    	            color: '#8392A5'
-    	        },
-    	        handleSize: '80%',
-    	        dataBackground: {
-    	            areaStyle: {
-    	                color: '#8392A5'
-    	            },
-    	            lineStyle: {
-    	                opacity: 0.8,
-    	                color: '#8392A5'
-    	            }
-    	        },
-    	        handleStyle: {
-    	            color: '#fff',
-    	            shadowBlur: 3,
-    	            shadowColor: 'rgba(0, 0, 0, 0.6)',
-    	            shadowOffsetX: 2,
-    	            shadowOffsetY: 2
-    	        }
-    	    }, {
-    	        type: 'inside'
-    	    }],
-    	    animation: false,
-    	    series: [
-    	        {
-    	            type: 'candlestick',
-    	            name: '日K',
-    	            data: data,
-    	            itemStyle: {
-    	                normal: {
-    	                    color: '#FD1050',
-    	                    color0: '#0CF49B',
-    	                    borderColor: '#FD1050',
-    	                    borderColor0: '#0CF49B'
-    	                }
-    	            }
-    	        },
-    	        {
-    	            name: 'MA5',
-    	            type: 'line',
-    	            data: calculateMA(5, data),
-    	            smooth: true,
-    	            showSymbol: false,
-    	            lineStyle: {
-    	                normal: {
-    	                    width: 1
-    	                }
-    	            }
-    	        },
-    	        {
-    	            name: 'MA10',
-    	            type: 'line',
-    	            data: calculateMA(10, data),
-    	            smooth: true,
-    	            showSymbol: false,
-    	            lineStyle: {
-    	                normal: {
-    	                    width: 1
-    	                }
-    	            }
-    	        },
-    	        {
-    	            name: 'MA20',
-    	            type: 'line',
-    	            data: calculateMA(20, data),
-    	            smooth: true,
-    	            showSymbol: false,
-    	            lineStyle: {
-    	                normal: {
-    	                    width: 1
-    	                }
-    	            }
-    	        },
-    	        {
-    	            name: 'MA30',
-    	            type: 'line',
-    	            data: calculateMA(30, data),
-    	            smooth: true,
-    	            showSymbol: false,
-    	            lineStyle: {
-    	                normal: {
-    	                    width: 1
-    	                }
-    	            }
-    	        },
-    	        {
-    	            name: 'MA60',
-    	            type: 'line',
-    	            data: calculateMA(60, data),
-    	            smooth: true,
-    	            showSymbol: false,
-    	            lineStyle: {
-    	                normal: {
-    	                    width: 1
-    	                }
-    	            }
-    	        }
-    	    ]
-    	};
-	    echarts.init(document.getElementById('cg-k-line')).setOption(option);
+        myChart.setOption(option = {
+            backgroundColor: '#fff',
+            animation: false,
+            title : {
+                text: '南丁格尔玫瑰图',
+                x:'left'
+            },
+            legend: {//图例
+                top: 5,
+                left: 'center',
+                data: ['MA5', 'MA10', 'MA20', 'MA30']
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross'
+                },
+                backgroundColor: 'rgba(245, 245, 245, 0.8)',
+                borderWidth: 1,
+                borderColor: '#ccc',
+                padding: 10,
+                textStyle: {
+                    color: '#000'
+                },
+                position: function (pos, params, el, elRect, size) {
+                    var obj = {top: 10};
+                    obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+                    return obj;
+                }
+                // extraCssText: 'width: 170px'
+            },
+            axisPointer: {
+                link: {xAxisIndex: 'all'},
+                label: {
+                    backgroundColor: '#777'
+                }
+            },
+            toolbox: {
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: false
+                    },
+                    brush: {
+                        type: ['lineX', 'clear']
+                    }
+                }
+            },
+            brush: {
+                xAxisIndex: 'all',
+                brushLink: 'all',
+                outOfBrush: {
+                    colorAlpha: 0.1
+                }
+            },
+            visualMap: {
+                show: false,
+                seriesIndex: 5,
+                dimension: 2,
+                pieces: [{
+                    value: 1,
+                    color: downColor
+                }, {
+                    value: -1,
+                    color: upColor
+                }]
+            },
+            grid: [ //数据区域    K线 和 交易量
+                {
+                    left: '40',
+                    right: '10',
+                    top: '30',
+                    bottom:'95'
+                },
+                {
+                    left: '40',
+                    right: '10',
+                    bottom: '31',
+                    height: '50'
+                }
+            ],
+            xAxis: [
+                {
+                    type: 'category',
+                    data: data.categoryData,
+                    scale: true,
+                    boundaryGap : false,
+                    axisLine: {onZero: false},
+                    splitLine: {show: false},
+                    splitNumber: 20,
+                    min: 'dataMin',
+                    max: 'dataMax',
+                    axisPointer: {
+                        z: 100
+                    }
+                },
+                {
+                    type: 'category',
+                    gridIndex: 1,
+                    data: data.categoryData,
+                    scale: true,
+                    boundaryGap : false,
+                    axisLine: {onZero: false},
+                    axisTick: {show: false},
+                    splitLine: {show: false},
+                    axisLabel: {show: false},
+                    splitNumber: 20,
+                    min: 'dataMin',
+                    max: 'dataMax'
+                }
+            ],
+            yAxis: [
+                {
+                    scale: true,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                {
+                    scale: true,
+                    gridIndex: 1,
+                    splitNumber: 2,
+                    axisLabel: {show: false},
+                    axisLine: {show: false},
+                    axisTick: {show: false},
+                    splitLine: {show: false}
+                }
+            ],
+            dataZoom: [
+                {
+                    type: 'inside',
+                    xAxisIndex: [0, 1],
+                    start: 98,
+                    end: 100
+                },
+                { //下方拖动条
+                    show: true,
+                    xAxisIndex: [0, 1],
+                    type: 'slider',
+                    bottom: '1',
+                    height:'20',
+                    start: 98,
+                    end: 100
+                }
+            ],
+            series: [
+                {
+                    name: '',
+                    type: 'candlestick',
+                    data: data.values,
+                    itemStyle: {
+                        normal: {
+                            color: upColor,
+                            color0: downColor,
+                            borderColor: null,
+                            borderColor0: null
+                        }
+                    },
+                    tooltip: {
+                        formatter: function (param) {
+                            param = param[0];
+                            return [
+                                'Date: ' + param.name + '<hr size=1 style="margin: 3px 0">',
+                                '开盘: ' + param.data[0] + '<br/>',
+                                '收盘: ' + param.data[1] + '<br/>',
+                                '最低: ' + param.data[2] + '<br/>',
+                                '最高: ' + param.data[3] + '<br/>'
+                            ].join('');
+                        }
+                    }
+                },
+                {
+                    name: 'MA5',
+                    type: 'line',
+                    data: calculateMA(5, data),
+                    smooth: true,
+                    symbol: "none",
+                    lineStyle: {
+                        normal: {opacity: 0.5}
+                    }
+                },
+                {
+                    name: 'MA10',
+                    type: 'line',
+                    data: calculateMA(10, data),
+                    smooth: true,
+                    symbol: "none",
+                    lineStyle: {
+                        normal: {opacity: 0.5}
+                    }
+                },
+                {
+                    name: 'MA20',
+                    type: 'line',
+                    data: calculateMA(20, data),
+                    smooth: true,
+                    symbol: "none",
+                    lineStyle: {
+                        normal: {opacity: 0.5}
+                    }
+                },
+                {
+                    name: 'MA30',
+                    type: 'line',
+                    data: calculateMA(30, data),
+                    smooth: true,
+                    symbol: "none",
+                    lineStyle: {
+                        normal: {opacity: 0.5}
+                    }
+                },
+                { //交易量柱状图
+                    name: 'Volume',
+                    type: 'bar',
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    data: data.volumes
+                }
+            ]
+        }, true);
 	});
 }
 

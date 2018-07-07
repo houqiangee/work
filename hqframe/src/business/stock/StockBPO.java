@@ -892,14 +892,14 @@ public class StockBPO extends BPO{
 		DataObject vdo=new DataObject();
 		String re="";
 		String gpdm=para.getString("gpdm");
-		sql.setSql("select wm_concat(to_char(rq,'yyyy/mm/dd')||'#'||kpj||'#'||spj||'#'||zde||'#'||zdf||'%#'||zdj||'#'||zgj) as re " +
+		sql.setSql("select replace(wm_concat(to_char(rq,'yyyy/mm/dd')||'#'||round(kpj,2)||'#'||round(spj,2)||'#'||round(zdj,2)||'#'||round(zgj,2)||'#'||cjl),'NaN','0') as re " +
 				"     from " +
 				"  (select * from stock.stock_day_infor " +
 				"	 where gpdm=? and kpj<>0 and rq between ? and ? " +
 				"	 order by rq ) as m ");
 		sql.setString(1, gpdm);
-		sql.setDate(3, DateUtil.addDay(DateUtil.getDBDate(), -2*365));
-		sql.setDate(4, DateUtil.getDBDate());
+		sql.setDate(2, DateUtil.addDay(DateUtil.getDBDate(), -2*365));
+		sql.setDate(3, DateUtil.getDBDate());
 		DataStore vds=sql.executeQuery();
 		if(vds.rowCount()>0){
 			re=vds.getString(0, "re");
