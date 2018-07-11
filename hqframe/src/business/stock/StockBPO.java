@@ -75,7 +75,7 @@ public class StockBPO extends BPO{
 		sql.setSql("select * from stock.stock_list a " +
 				"    where exists(select 1 " +
 				"							    from stock.stock_day_infor x " +
-				"							   where x.gpdm=a.gpdm) limit 300 ");
+				"							   where x.gpdm=a.gpdm)  ");
 		DataStore lsds=sql.executeQuery();
 		DATADO=new DataStore();
 		for(int i=0;i<lsds.rowCount();i++){
@@ -885,7 +885,7 @@ public class StockBPO extends BPO{
 	}
 	
 	/**
-	 * 查某个股票的k线
+	 * 展示某个股票的k线
 	 * @author hq
 	 */
 	public DataObject showOneStockK(DataObject para) throws Exception {
@@ -909,5 +909,55 @@ public class StockBPO extends BPO{
 		}
 		vdo.put("re", re);
 		return vdo;
+	}
+	
+	/**
+	 * 展示某个股票的相似k线
+	 * @author hq
+	 */
+	public DataObject showOneStockLikeK(DataObject para) throws Exception {
+		String re="";
+		String gpdm=para.getString("gpdm");
+		sql.setSql("select tzc_1 from stock.stock_list where gpdm=?");
+		sql.setString(1, gpdm);
+		DataStore lsds=sql.executeQuery();
+		if(lsds.rowCount()==0){
+			this.BusinessException("股票代码有误");
+		}
+		String tzc_1=lsds.getString(0, "tzc_1");
+		if(tzc_1==null || "".equals(tzc_1)){
+			this.BusinessException("未查到相似股票");
+		}
+		
+		JSONArray ja=JSONArray.fromObject(tzc_1);
+		DataObject xsgp=new DataObject();
+		for(int i=0;i<ja.size();i++){
+			JSONObject job = ja.getJSONObject(i);
+			String gpdm2=job.getString("gpdm");
+			String qsrq=job.getString("qsrq");
+			String zzrq=job.getString("zzrq");
+			String xsd=job.getString("xsd");
+			DataObject lsdo=new DataObject();
+			
+			sql.setSql("select replace(wm_concat(to_char(rq,'yyyy/mm/dd')||'#'||round(kpj,2)||'#'||round(spj,2)||'#'||round(zdj,2)||'#'||round(zgj,2)||'#'||cjl),'NaN','0') as re " +
+					"     from " +
+					"  (select * from stock.stock_day_infor " +
+					"	 where gpdm=? and kpj<>0 and rq between ? and ? " +
+					"	 order by rq ) as m ");
+			sql.setString(1, gpdm2);
+			sql.setDate(2, DateUtil.addDay(DateUtil.stringToDate(qsrq), -365));
+			sql.setDate(3, DateUtil.addDay(DateUtil.stringToDate(zzrq), 365));
+			DataStore vds=sql.executeQuery();
+			if(vds.rowCount()>0){
+				re=vds.getString(0, "re");
+				lsdo.put("gpdm", gpdm);
+				lsdo.put("qsrq", qsrq);
+				lsdo.put("zzrq", zzrq);
+				lsdo.put("xsd", xsd);
+				lsdo.put("kdata", re);
+				xsgp.put("xs"+i, lsdo);
+			}
+		}
+		return xsgp;
 	}
 }
