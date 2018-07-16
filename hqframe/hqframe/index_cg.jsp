@@ -26,6 +26,17 @@ String version=System.currentTimeMillis()+"";
 		
 		</div>
 	</div>
+	<div id="cg-similarity-main" >
+		<div id="cg-xs-0" class="cg-xs"></div>
+		<div id="cg-xs-1" class="cg-xs"></div>
+		<div id="cg-xs-2" class="cg-xs"></div>
+		<div id="cg-xs-3" class="cg-xs"></div>
+		<div id="cg-xs-4" class="cg-xs"></div>
+		<div id="cg-xs-5" class="cg-xs"></div>
+		<div id="cg-xs-6" class="cg-xs"></div>
+		<div id="cg-xs-7" class="cg-xs"></div>
+		<div id="cg-xs-8" class="cg-xs"></div>
+	</div>
 </div>
 <script>
 
@@ -117,7 +128,7 @@ function showOneStockK(gpdm){
 		return false;
 	}
 	
-	var url = "Stock.do?action=showOneStockK&gpdm="+gpdm+"&_="+new Date();  
+	var url = "Stock.do?action=showOneStockK&gpdm="+gpdm;  
 	AjaxUtil.aReq(url,function(dates){
 		var myChart = echarts.init(document.getElementById("cg-k-line"));
 		var upColor = "#00da3c";
@@ -354,6 +365,177 @@ function showOneStockK(gpdm){
                 }
             ]
         }, true);
+	});
+}
+
+
+function showOneStockLikeK(gpdm){
+	if(gpdm==null ||gpdm==""){
+		return false;
+	}
+	
+	var upColor = "#00da3c";
+	var downColor = "#ec0000";
+	
+	var option={
+        backgroundColor: '#fff',
+        animation: false,
+        title : {
+            text: '南丁格尔玫瑰图',
+            x:'left'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross'
+            },
+            backgroundColor: 'rgba(245, 245, 245, 0.8)',
+            borderWidth: 1,
+            borderColor: '#ccc',
+            padding: 10,
+            textStyle: {
+                color: '#000'
+            },
+            position: function (pos, params, el, elRect, size) {
+                var obj = {top: 10};
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+                return obj;
+            }
+            // extraCssText: 'width: 170px'
+        },
+        axisPointer: {
+            link: {xAxisIndex: 'all'},
+            label: {
+                backgroundColor: '#777'
+            }
+        },
+        brush: {
+            xAxisIndex: 'all',
+            brushLink: 'all',
+            outOfBrush: {
+                colorAlpha: 0.1
+            }
+        },
+        visualMap: {
+            show: false,
+            seriesIndex: 5,
+            dimension: 2,
+            pieces: [{
+                value: 1,
+                color: downColor
+            }, {
+                value: -1,
+                color: upColor
+            }]
+        },
+        grid: [ //数据区域    K线 和 交易量
+            {
+                left: '40',
+                right: '10',
+                top: '30',
+                bottom:'10'
+            }
+        ],
+        xAxis: [
+            {
+                type: 'category',
+                data: data.categoryData,
+                scale: true,
+                boundaryGap : false,
+                axisLine: {onZero: false},
+                splitLine: {show: false},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax',
+                axisPointer: {
+                    z: 100
+                }
+            }
+        ],
+        yAxis: [
+            {
+                scale: true,
+                splitArea: {
+                    show: true
+                }
+            },
+            {
+                scale: true,
+                gridIndex: 1,
+                splitNumber: 2,
+                axisLabel: {show: false},
+                axisLine: {show: false},
+                axisTick: {show: false},
+                splitLine: {show: false}
+            }
+        ],
+        dataZoom: [
+            {
+                type: 'inside',
+                xAxisIndex: [0, 1],
+                start: 98,
+                end: 100
+            },
+            { //下方拖动条
+                show: true,
+                xAxisIndex: [0, 1],
+                type: 'slider',
+                bottom: '1',
+                height:'20',
+                start: 98,
+                end: 100
+            }
+        ],
+        series: [
+            {
+                name: '',
+                type: 'candlestick',
+                data: data.values,
+                itemStyle: {
+                    normal: {
+                        color: upColor,
+                        color0: downColor,
+                        borderColor: null,
+                        borderColor0: null
+                    }
+                },
+                tooltip: {
+                    formatter: function (param) {
+                        param = param[0];
+                        return [
+                            'Date: ' + param.name + '<hr size=1 style="margin: 3px 0">',
+                            '开盘: ' + param.data[0] + '<br/>',
+                            '收盘: ' + param.data[1] + '<br/>',
+                            '最低: ' + param.data[2] + '<br/>',
+                            '最高: ' + param.data[3] + '<br/>'
+                        ].join('');
+                    }
+                }
+            }
+        ]
+	}
+	
+	var url = "Stock.do?action=showOneStockLikeK&gpdm="+gpdm;  
+	AjaxUtil.aReq(url,function(dates){
+    	var result=JSON.parse(dates);
+    	
+    	for(var k=0;k<9;k++){
+    		if(result["xs"+k]){
+    			var myChart = echarts.init(document.getElementById("cg-xs-"+k));
+    			var re=result["xs"+k].kdata;
+    			var eachday=re.split(",");
+    	    	var rawData=[];
+    	    	for(var i=0;i<eachday.length;i++){
+    	    		if(eachday[i]!=null && eachday[i]!=""){
+    	    			rawData.push(eachday[i].split("#"));
+    	    		}
+    	    	}
+    	        var data = splitData(rawData);
+    	        myChart.setOption(option, true);
+    		}else{
+    			continue;
+    		}
+    	}
 	});
 }
 

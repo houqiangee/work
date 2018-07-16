@@ -3,6 +3,11 @@ var AjaxUtil=(function(){
 	
 	exports.Req=function(url){
 		var data = {};  
+		if(url.indexOf("?") != -1 ){
+			url+="&_="+new Date();
+		}else{
+			url+="?_="+new Date();
+		}
 		$.ajax({  
 		    type : "get",  
 		    async : false, 
@@ -32,6 +37,11 @@ var AjaxUtil=(function(){
 	
 	exports.aReq=function(url,callback){
 		var data = {};  
+		if(url.indexOf("?") != -1 ){
+			url+="&_="+new Date();
+		}else{
+			url+="?_="+new Date();
+		}
 		$.ajax({  
 		    type : "get",  
 		    async : true, 
@@ -63,6 +73,11 @@ var AjaxUtil=(function(){
 	
 	exports.RefArea=function($obj,url){
 		var data = {};  
+		if(url.indexOf("?") != -1 ){
+			url+="&_="+new Date();
+		}else{
+			url+="?_="+new Date();
+		}
 		$.ajax({  
 		    type : "get",  
 		    async : false, 
@@ -92,6 +107,11 @@ var AjaxUtil=(function(){
 	
 	exports.aRefArea=function($obj,url,callback){
 		var data = {};  
+		if(url.indexOf("?") != -1 ){
+			url+="&_="+new Date();
+		}else{
+			url+="?_="+new Date();
+		}
 		$.ajax({  
 		    type : "get",  
 		    async : true, 
