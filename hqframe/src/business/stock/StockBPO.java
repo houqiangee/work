@@ -955,7 +955,7 @@ public class StockBPO extends BPO{
 				lsdo.put("zzrq", zzrq);
 				lsdo.put("xsd", xsd);
 				lsdo.put("kdata", re);
-				xsgp.put("xs"+i, lsdo);
+				xsgp.put("xs"+i, lsdo.toJSON());
 			}
 		}
 		return xsgp;

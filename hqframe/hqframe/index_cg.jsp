@@ -23,10 +23,9 @@ String version=System.currentTimeMillis()+"";
 	</div>
 	<div id="cg-k-line-div" >
 		<div id="cg-k-line" style="height: 400px;width: 600px;margin-left: auto;margin-right: auto" >
-		
 		</div>
 	</div>
-	<div id="cg-similarity-main" >
+	<div id="cg-similarity-main">
 		<div id="cg-xs-0" class="cg-xs"></div>
 		<div id="cg-xs-1" class="cg-xs"></div>
 		<div id="cg-xs-2" class="cg-xs"></div>
@@ -36,10 +35,11 @@ String version=System.currentTimeMillis()+"";
 		<div id="cg-xs-6" class="cg-xs"></div>
 		<div id="cg-xs-7" class="cg-xs"></div>
 		<div id="cg-xs-8" class="cg-xs"></div>
+		<div class="clearfloat"></div>
 	</div>
 </div>
 <script>
-
+/* 
 $(function() {
     var availableTags = [
       "ActionScript",
@@ -68,7 +68,7 @@ $(function() {
     $("#index-cg-main #gpdm").autocomplete({
       source: availableTags
     });
-});
+}); */
 
 layui.use(['form', 'layedit'], function(){
 	var form = layui.form
@@ -78,6 +78,7 @@ layui.use(['form', 'layedit'], function(){
 	//监听提交
 	form.on('submit(fxgp)', function(data){
 		showOneStockK(data.field.gpdm);
+		showOneStockLikeK(data.field.gpdm);
 		return false;
 	});
 	
@@ -131,8 +132,8 @@ function showOneStockK(gpdm){
 	var url = "Stock.do?action=showOneStockK&gpdm="+gpdm;  
 	AjaxUtil.aReq(url,function(dates){
 		var myChart = echarts.init(document.getElementById("cg-k-line"));
-		var upColor = "#00da3c";
-		var downColor = "#ec0000";
+		var upColor = "#ec0000";
+		var downColor = "#00da3c";
 		
     	var result=JSON.parse(dates);
     	var re=result.re;
@@ -277,7 +278,7 @@ function showOneStockK(gpdm){
                 {
                     type: 'inside',
                     xAxisIndex: [0, 1],
-                    start: 98,
+                    start: 80,
                     end: 100
                 },
                 { //下方拖动条
@@ -286,7 +287,7 @@ function showOneStockK(gpdm){
                     type: 'slider',
                     bottom: '1',
                     height:'20',
-                    start: 98,
+                    start: 80,
                     end: 100
                 }
             ],
@@ -370,159 +371,160 @@ function showOneStockK(gpdm){
 
 
 function showOneStockLikeK(gpdm){
+	$(".cg-xs").hide();
 	if(gpdm==null ||gpdm==""){
 		return false;
 	}
-	
-	var upColor = "#00da3c";
-	var downColor = "#ec0000";
-	
-	var option={
-        backgroundColor: '#fff',
-        animation: false,
-        title : {
-            text: '南丁格尔玫瑰图',
-            x:'left'
-        },
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'cross'
+	var upColor = "#ec0000";
+	var downColor = "#00da3c";
+	var option = {
+            backgroundColor: '#fff',
+            animation: false,
+            title : {
+                text: '南丁格尔玫瑰图',
+                x:'left'
             },
-            backgroundColor: 'rgba(245, 245, 245, 0.8)',
-            borderWidth: 1,
-            borderColor: '#ccc',
-            padding: 10,
-            textStyle: {
-                color: '#000'
-            },
-            position: function (pos, params, el, elRect, size) {
-                var obj = {top: 10};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
-                return obj;
-            }
-            // extraCssText: 'width: 170px'
-        },
-        axisPointer: {
-            link: {xAxisIndex: 'all'},
-            label: {
-                backgroundColor: '#777'
-            }
-        },
-        brush: {
-            xAxisIndex: 'all',
-            brushLink: 'all',
-            outOfBrush: {
-                colorAlpha: 0.1
-            }
-        },
-        visualMap: {
-            show: false,
-            seriesIndex: 5,
-            dimension: 2,
-            pieces: [{
-                value: 1,
-                color: downColor
-            }, {
-                value: -1,
-                color: upColor
-            }]
-        },
-        grid: [ //数据区域    K线 和 交易量
-            {
-                left: '40',
-                right: '10',
-                top: '30',
-                bottom:'10'
-            }
-        ],
-        xAxis: [
-            {
-                type: 'category',
-                data: data.categoryData,
-                scale: true,
-                boundaryGap : false,
-                axisLine: {onZero: false},
-                splitLine: {show: false},
-                splitNumber: 20,
-                min: 'dataMin',
-                max: 'dataMax',
+            tooltip: {
+                trigger: 'axis',
                 axisPointer: {
-                    z: 100
-                }
-            }
-        ],
-        yAxis: [
-            {
-                scale: true,
-                splitArea: {
-                    show: true
-                }
-            },
-            {
-                scale: true,
-                gridIndex: 1,
-                splitNumber: 2,
-                axisLabel: {show: false},
-                axisLine: {show: false},
-                axisTick: {show: false},
-                splitLine: {show: false}
-            }
-        ],
-        dataZoom: [
-            {
-                type: 'inside',
-                xAxisIndex: [0, 1],
-                start: 98,
-                end: 100
-            },
-            { //下方拖动条
-                show: true,
-                xAxisIndex: [0, 1],
-                type: 'slider',
-                bottom: '1',
-                height:'20',
-                start: 98,
-                end: 100
-            }
-        ],
-        series: [
-            {
-                name: '',
-                type: 'candlestick',
-                data: data.values,
-                itemStyle: {
-                    normal: {
-                        color: upColor,
-                        color0: downColor,
-                        borderColor: null,
-                        borderColor0: null
-                    }
+                    type: 'cross'
                 },
-                tooltip: {
-                    formatter: function (param) {
-                        param = param[0];
-                        return [
-                            'Date: ' + param.name + '<hr size=1 style="margin: 3px 0">',
-                            '开盘: ' + param.data[0] + '<br/>',
-                            '收盘: ' + param.data[1] + '<br/>',
-                            '最低: ' + param.data[2] + '<br/>',
-                            '最高: ' + param.data[3] + '<br/>'
-                        ].join('');
+                backgroundColor: 'rgba(245, 245, 245, 0.8)',
+                borderWidth: 1,
+                borderColor: '#ccc',
+                padding: 10,
+                textStyle: {
+                    color: '#000'
+                },
+                position: function (pos, params, el, elRect, size) {
+                    var obj = {top: 10};
+                    obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+                    return obj;
+                }
+                // extraCssText: 'width: 170px'
+            },
+            axisPointer: {
+                link: {xAxisIndex: 'all'},
+                label: {
+                    backgroundColor: '#777'
+                }
+            },
+            toolbox: {
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: false
+                    },
+                    brush: {
+                        type: ['lineX', 'clear']
                     }
                 }
-            }
-        ]
-	}
-	
+            },
+            brush: {
+                xAxisIndex: 'all',
+                brushLink: 'all',
+                outOfBrush: {
+                    colorAlpha: 0.1
+                }
+            },
+            visualMap: {
+                show: false,
+                seriesIndex: 5,
+                dimension: 2,
+                pieces: [{
+                    value: 1,
+                    color: downColor
+                }, {
+                    value: -1,
+                    color: upColor
+                }]
+            },
+            grid: [ //数据区域    K线 和 交易量
+                {
+                    left: '40',
+                    right: '10',
+                    top: '30',
+                    bottom:'40'
+                }
+            ],
+            xAxis: [
+                {
+                    type: 'category',
+                    data: null,
+                    scale: true,
+                    boundaryGap : false,
+                    axisLine: {onZero: false},
+                    splitLine: {show: false},
+                    splitNumber: 20,
+                    min: 'dataMin',
+                    max: 'dataMax',
+                    axisPointer: {
+                        z: 100
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    scale: true,
+                    splitArea: {
+                        show: true
+                    }
+                }
+            ],
+            dataZoom: [
+                {
+                    type: 'inside',
+                    xAxisIndex: [0],
+                    start: 40,
+                    end: 60
+                },
+                { //下方拖动条
+                    show: true,
+                    xAxisIndex: [0],
+                    type: 'slider',
+                    bottom: '1',
+                    height:'15',
+                    start: 40,
+                    end: 60
+                }
+            ],
+            series: [
+                {
+                    name: '',
+                    type: 'candlestick',
+                    data:null,
+                    itemStyle: {
+                        normal: {
+                            color: upColor,
+                            color0: downColor,
+                            borderColor: null,
+                            borderColor0: null
+                        }
+                    },
+                    tooltip: {
+                        formatter: function (param) {
+                            param = param[0];
+                            return [
+                                'Date: ' + param.name + '<hr size=1 style="margin: 3px 0">',
+                                '开盘: ' + param.data[0] + '<br/>',
+                                '收盘: ' + param.data[1] + '<br/>',
+                                '最低: ' + param.data[2] + '<br/>',
+                                '最高: ' + param.data[3] + '<br/>'
+                            ].join('');
+                        }
+                    }
+                }
+            ]
+        };
 	var url = "Stock.do?action=showOneStockLikeK&gpdm="+gpdm;  
 	AjaxUtil.aReq(url,function(dates){
     	var result=JSON.parse(dates);
     	
     	for(var k=0;k<9;k++){
     		if(result["xs"+k]){
+    			$("#cg-xs-"+k).show();
     			var myChart = echarts.init(document.getElementById("cg-xs-"+k));
-    			var re=result["xs"+k].kdata;
+    			var thisk=JSON.parse(result["xs"+k]);
+    			var re=thisk.kdata;
     			var eachday=re.split(",");
     	    	var rawData=[];
     	    	for(var i=0;i<eachday.length;i++){
@@ -531,6 +533,8 @@ function showOneStockLikeK(gpdm){
     	    		}
     	    	}
     	        var data = splitData(rawData);
+    	        option.xAxis[0].data=data.categoryData;
+    	        option.series[0].data=data.values;
     	        myChart.setOption(option, true);
     		}else{
     			continue;
@@ -540,5 +544,5 @@ function showOneStockLikeK(gpdm){
 }
 
 showOneStockK("000001");
-
+showOneStockLikeK("000001");
 </script> 

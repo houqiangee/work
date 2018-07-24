@@ -25,4 +25,16 @@ public class StockController extends Controller{
 		return this.writeMsg(response, vdo.toJSON());
 	}
 	
+	/**
+	 * 查某个股票的相似k线
+	 * @author hq
+	 */
+	public ModelAndView showOneStockLikeK(HttpServletRequest request,
+			HttpServletResponse response, DataObject para) throws Exception {
+		BPO nbpo=this.newBPO(StockBPO.class);
+		DataObject vdo=nbpo.doMethod("showOneStockLikeK", para,this.getUser(request));
+		return this.writeMsg(response, vdo.toJSON());
+	}
+	
+	
 }

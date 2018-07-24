@@ -54,7 +54,11 @@ String version=System.currentTimeMillis()+"";
   <div id="index-mid-div">
   </div>
   <div id="index-bot-div">
-  山东滋滋猴网络科技有限公司
+  主办单位：济南门似海网络科技有限公司
+  <br>
+  Operated by JiNan Mensihai network technology Co., Ltd.
+  <br>
+  &copy; 2018 Mensihai All Rights Reserved.
   </div>
 </body>
 <script>
