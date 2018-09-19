@@ -36,5 +36,4 @@ public class StockController extends Controller{
 		return this.writeMsg(response, vdo.toJSON());
 	}
 	
-	
 }

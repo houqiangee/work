@@ -23,6 +23,7 @@ String version=System.currentTimeMillis()+"";
 	<script type="text/javascript" src="./js/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="./js/layui/layui.js"></script>
 	<script type="text/javascript" src="./js/AjaxUtil.js?_=<%=version%>"></script>
+	<script type="text/javascript" src="./js/DataUtil.js?_=<%=version%>"></script>
   </head>
 <body>
   <div id="index-top-div">
@@ -36,6 +37,7 @@ String version=System.currentTimeMillis()+"";
 		<li class="layui-nav-item"><a href="javascript:;" data-mk="yx">玩个游戏</a></li>
 		<li class="layui-nav-item"><a href="javascript:;" data-mk="lt">意见建议</a></li>
 		<li class="layui-nav-item"><a href="javascript:;" data-mk="xq">联系我们</a></li>
+		<li class="layui-nav-item"><a href="javascript:;" data-mk="tb">淘宝验证</a></li>
 	</ul>
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">
@@ -80,10 +82,6 @@ function showIndexPage(mk){
 	    }  
 	});  
 }
-
-layui.use('layer', function(){
-	var layer = layui.layer;
-});
 
 layui.use('element', function(){
 	var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块

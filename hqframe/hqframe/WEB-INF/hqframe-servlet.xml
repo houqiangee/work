@@ -7,8 +7,10 @@
 		<property name="mappings">
 			<props>
 				<prop key="/Stock.do">Stock</prop>
+				<prop key="/TaoBao.do">TaoBao</prop>
 			</props>
 		</property>
 	</bean>
 	<bean id="Stock" class="business.stock.StockController"></bean>
+	<bean id="TaoBao" class="business.taobao.TaoBaoController"></bean>
 </beans>
