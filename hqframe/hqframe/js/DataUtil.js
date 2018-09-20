@@ -8,9 +8,16 @@ layui.use(['laytpl','layer'], function(){
 var DataUtil=(function(){
 	var exports={};
 	
-	exports.filldata=function(dsjson,getTpl,$target){
+	exports.filldataList=function(dsjson,getTpl,$target){
+		var d=[];
+		if(typeof(dsjson)=="string"){
+			d=JSON.parse(dsjson);
+		}else{
+			d=dsjson;
+		}
+		
 		var data={};
-		data["data"]=dsjson;
+		data["data"]=d;
 		console.log(data);
 		var view = $target[0];
 		if(!view){
