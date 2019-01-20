@@ -535,6 +535,7 @@ function showOneStockLikeK(gpdm){
     	        var data = splitData(rawData);
     	        option.xAxis[0].data=data.categoryData;
     	        option.series[0].data=data.values;
+    	        option.title.text=data.gpmc;
     	        myChart.setOption(option, true);
     		}else{
     			continue;
